@@ -1,11 +1,14 @@
 import {createElement} from '../render.js';
 
-function createPointTemplate() {
+function createPointTemplate(point) {
+  const {basePrice, dateFrom, dateTo, destination, isFavorite, offers, type} = point;
+
+
   return `<li class="trip-events__item">
               <div class="event">
                 <time class="event__date" datetime="2019-03-18">MAR 18</time>
                 <div class="event__type">
-                  <img class="event__type-icon" width="42" height="42" src="img/icons/drive.png" alt="Event type icon">
+                  <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
                 <h3 class="event__title">Drive Chamonix</h3>
                 <div class="event__schedule">
@@ -17,7 +20,7 @@ function createPointTemplate() {
                   <p class="event__duration">01H 35M</p>
                 </div>
                 <p class="event__price">
-                  &euro;&nbsp;<span class="event__price-value">160</span>
+                  &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
                 </p>
                 <h4 class="visually-hidden">Offers:</h4>
                 <ul class="event__selected-offers">
@@ -41,8 +44,11 @@ function createPointTemplate() {
 }
 
 export default class PointView {
+  constructor({point}) {
+    this.point = point;
+  }
   getTemplate() {
-    return createPointTemplate();
+    return createPointTemplate(this.point);
   }
 
   getElement() {
