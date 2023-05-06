@@ -1,23 +1,26 @@
 import {createElement} from '../render.js';
+import {getRandomTimeFrom, humanizeDate} from "../utils";
 
 function createPointTemplate(point) {
-  const {basePrice, dateFrom, dateTo, destination, isFavorite, offers, type} = point;
+  console.log(point);
+  const {basePrice, timeFrom, timeTo, date, duration, destination, isFavorite, offers, type} = point;
 
+  console.log(humanizeDate(getRandomTimeFrom()))
 
   return `<li class="trip-events__item">
               <div class="event">
-                <time class="event__date" datetime="2019-03-18">MAR 18</time>
+                <time class="event__date" datetime="2019-03-18">${date}</time>
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
-                <h3 class="event__title">Drive Chamonix</h3>
+                <h3 class="event__title">${type} ${destination}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
-                    <time class="event__start-time" datetime="2019-03-18T14:30">14:30</time>
+                    <time class="event__start-time" datetime="2019-03-18T14:30">${timeFrom}</time>
                     &mdash;
-                    <time class="event__end-time" datetime="2019-03-18T16:05">16:05</time>
+                    <time class="event__end-time" datetime="2019-03-18T16:05">${timeTo}</time>
                   </p>
-                  <p class="event__duration">01H 35M</p>
+                  <p class="event__duration">${duration}</p>
                 </div>
                 <p class="event__price">
                   &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
@@ -30,7 +33,7 @@ function createPointTemplate(point) {
                     <span class="event__offer-price">200</span>
                   </li>
                 </ul>
-                <button class="event__favorite-btn  event__favorite-btn--active" type="button">
+                <button class="event__favorite-btn${isFavorite ? ' event__favorite-btn--active' : ''}" type="button">
                   <span class="visually-hidden">Add to favorite</span>
                   <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
                     <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
