@@ -11,6 +11,7 @@
     "not < 0.25%"
   ],
   "scripts": {
+    "lint-fix": "eslint src/ --fix",
     "lint": "eslint src/",
     "build": "webpack --mode production",
     "start": "webpack serve --mode development --open"
