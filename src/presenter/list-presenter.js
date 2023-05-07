@@ -1,6 +1,5 @@
 import SortView from '../view/sort-view';
 import PointView from '../view/point-view';
-import EditingPointView from '../view/editing-point-view';
 import ListView from '../view/list-view';
 import {render} from '../render.js';
 
@@ -17,7 +16,8 @@ export default class ListPresenter {
 
     render(new SortView(), this.listContainer);
     render(this.listComponent, this.listContainer);
-    render(new EditingPointView(), this.listComponent.getElement());
+    // Временно скрываем, чтобы не мешало работать над точками
+    // render(new EditingPointView(), this.listComponent.getElement());
 
     for (let i = 0; i < this.listPoints.length; i++) {
       render(new PointView({point: this.listPoints[i]}), this.listComponent.getElement());
