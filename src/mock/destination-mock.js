@@ -76,7 +76,11 @@ const destinationMock = [
 ];
 
 function getDestination(id){
-  return destinationMock.find((e) => e.id === id);
+  if (!id){
+    return destinationMock;
+  } else {
+    return destinationMock.find((e) => e.id === id);
+  }
 }
 
 export {getDestination};

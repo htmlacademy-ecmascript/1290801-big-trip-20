@@ -231,6 +231,7 @@ const mockOffers = [
   }
 ];
 
+/** Возвращает массив офферов определенного типа. Либо (если указать type) конкретного*/
 function getOffers(type){
   if (!type) {
     return mockOffers;
