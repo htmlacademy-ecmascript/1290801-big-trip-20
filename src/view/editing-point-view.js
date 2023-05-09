@@ -5,6 +5,8 @@ import {formatToUpperCaseFirstLetter, formatDateToCalendarView} from '../utils';
 function createEditingPointView(point, allDestinations) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, offers, allOffersThisType, type} = point;
 
+  console.log(`${destination.name} point is Favorite? : ${!!isFavorite}`)
+
   function getDestinationsList (){
     let destinationsList = '';
     for (let i = 0; i < allDestinations.length; i++) {
