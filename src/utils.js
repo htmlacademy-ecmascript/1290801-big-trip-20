@@ -59,5 +59,24 @@ function formatDateToDatetimeAttr (date){
   return dayjs(date).format('YYYY-MM-DD');
 }
 
+/** форматирует дату для "календарного вида" */
+function formatDateToCalendarView (date){
+  return dayjs(date).format('DD/MM/YY HH:mm');
+}
 
-export {getRandomArrayElement, humanizeDate, timeDifference, getRandomInt, getRandomTime, trimDate, formatDateToDatetimeAttr};
+/** принимает строку и возвращает ее, но с первой заглавной буквой */
+function formatToUpperCaseFirstLetter(string) {
+  return string[0].toUpperCase() + string.slice(1);
+}
+
+export {
+  getRandomArrayElement,
+  humanizeDate,
+  timeDifference,
+  getRandomInt,
+  getRandomTime,
+  trimDate,
+  formatDateToDatetimeAttr,
+  formatToUpperCaseFirstLetter,
+  formatDateToCalendarView
+};

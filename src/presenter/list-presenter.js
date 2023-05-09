@@ -1,27 +1,30 @@
 import SortView from '../view/sort-view';
 import PointView from '../view/point-view';
 import ListView from '../view/list-view';
+import EditingPointView from '../view/editing-point-view';
 import {render} from '../render.js';
 
 export default class ListPresenter {
   listComponent = new ListView();
 
-  constructor({listContainer, pointsModel}) {
+  constructor({listContainer, pointsModel, destinationsModel}) {
     this.listContainer = listContainer;
     this.pointsModel = pointsModel;
+    this.destinationsModel = destinationsModel;
   }
 
   init() {
     this.listPoints = [...this.pointsModel.getPoints()];
+    this.allDestinations = this.destinationsModel.getAllDestinations();
 
     render(new SortView(), this.listContainer);
     render(this.listComponent, this.listContainer);
-    // Временно скрываем, чтобы не мешало работать над точками
-    // render(new EditingPointView(), this.listComponent.getElement());
-
-    for (let i = 0; i < this.listPoints.length; i++) {
+    render(new EditingPointView({point: this.listPoints[0]}, this.allDestinations), this.listComponent.getElement());
+    for (let i = 1; i < this.listPoints.length; i++) {
       render(new PointView({point: this.listPoints[i]}), this.listComponent.getElement());
     }
 
   }
 }
+
+

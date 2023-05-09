@@ -4,6 +4,7 @@ import ListPresenter from './presenter/list-presenter';
 import {render} from './render.js';
 import {RenderPosition} from './render.js';
 import PointsModel from './model/point-model';
+import DestinationsModel from './model/destinations-model';
 
 
 const siteMainElement = document.querySelector('.page-body');
@@ -15,9 +16,11 @@ render(new TripInfoView(), siteHeaderInfoElement, RenderPosition.AFTERBEGIN);
 render(new FilterView(), siteHeaderFilterElement);
 
 const pointsModel = new PointsModel();
+const destinationsModel = new DestinationsModel();
 const listPresenter = new ListPresenter({
   listContainer: siteBodyElement,
   pointsModel,
+  destinationsModel,
 });
 
 
