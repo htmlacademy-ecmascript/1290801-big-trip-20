@@ -6,6 +6,7 @@ import {render} from '../render.js';
 
 export default class ListPresenter {
   listComponent = new ListView();
+  sortComponent = new SortView();
 
   constructor({listContainer, pointsModel, destinationsModel}) {
     this.listContainer = listContainer;
@@ -14,10 +15,10 @@ export default class ListPresenter {
   }
 
   init() {
-    this.listPoints = [...this.pointsModel.getPoints()];
+    this.listPoints = this.pointsModel.getPoints();
     this.allDestinations = this.destinationsModel.getAllDestinations();
 
-    render(new SortView(), this.listContainer);
+    render(this.sortComponent, this.listContainer);
     render(this.listComponent, this.listContainer);
     render(new EditingPointView({point: this.listPoints[0]}, this.allDestinations), this.listComponent.getElement());
     for (let i = 1; i < this.listPoints.length; i++) {

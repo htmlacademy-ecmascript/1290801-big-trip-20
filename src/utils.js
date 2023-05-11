@@ -15,7 +15,7 @@ function getRandomArrayElement(items) {
 function getRandomInt(max, min = 0) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 
@@ -36,7 +36,8 @@ function timeDifference(timeFrom, timeTo) {
 }
 
 /** Возвращает строку со временем UTC. Оно будет случайным и выше текущей даты до недели.
- * Если передать параметром строку с UTC временем, то вернет случайное время со сдвигом от него на расстояние до недели.*/
+ * Если передать параметром строку с UTC временем,
+ * то вернет случайное время со сдвигом от него на расстояние до недели.*/
 function getRandomTime (timeFrom) {
   const day = getRandomInt(7);
   const hour = getRandomInt(24);
