@@ -3,42 +3,41 @@ import {
   getRandomInt,
   getRandomTime
 } from '../utils';
-import {POINTS_TYPE} from '../const';
+import {MOCK_POINT_COUNT, POINTS_TYPE} from '../const';
 import {getOffers} from './offers-mock';
-import {getDestination} from './destination-mock';
 
 // const pointDestination = ['Moscow', 'Texas', 'London', 'Tokyo', 'New-York'];
 const pointDestination = ['b8bbe9a6-9fde-4713-930b-8105ed8decbb', '0ac9df44-6b6d-4233-8d29-3e227a3e470f', '115c1f07-f50e-4811-8b30-6e386023d457', '1ad0d08f-7172-4c3b-9fa1-5da21ea95bb2', '8e1901ba-1e26-43fa-b740-95a8286ce345'];
 
-function getRandomPoint() {
-
+function getRandomPointMock() {
   const offersCol = getRandomInt(3);
   const type = getRandomArrayElement(POINTS_TYPE);
   const offersThisType = getOffers(type).offers;
   const dateFrom = getRandomTime();
   const dateTo = getRandomTime(dateFrom);
-  const destination = getRandomArrayElement(pointDestination);
   const offers = [];
   for (let i = 0; i < offersCol; i++){
     offers.push(getRandomArrayElement(offersThisType).id);
   }
 
-  const mockPoints = [
-    {
-      'basePrice': getRandomInt(3000),
-      'dateFrom': dateFrom,
-      'dateTo': dateTo,
-      'destination': getDestination(destination),
-      'isFavorite': getRandomInt(2),
-      'offers': offers,
-      'allOffersThisType' : offersThisType,
-      'type': type
-    },
-  ];
-  return getRandomArrayElement(mockPoints);
+  const mockPoint = {
+    'id': crypto.randomUUID(),
+    'basePrice': getRandomInt(3000),
+    'dateFrom': dateFrom,
+    'dateTo': dateTo,
+    'destination': getRandomArrayElement(pointDestination),
+    'isFavorite': !!getRandomInt(2),
+    'offers': offers,
+    'type': type
+  };
+  return mockPoint;
 }
 
-export {getRandomPoint};
+function getRandomPointsMock() {
+  return Array.from({length: MOCK_POINT_COUNT}, getRandomPointMock);
+}
+
+export {getRandomPointMock, getRandomPointsMock};
 
 // From server:
 // {
