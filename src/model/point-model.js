@@ -3,7 +3,7 @@ import {getDestination} from '../mock/destination-mock';
 import {getOffers} from '../mock/offers-mock';
 
 export default class PointsModel {
-  _dataPoints = getRandomPointsMock();
+  #dataPoints = getRandomPointsMock();
 
   getOrganizationDataPoints(_dataPoints) {
     const orderedData = [];
@@ -27,8 +27,8 @@ export default class PointsModel {
 
   }
 
-  getPoints() {
-    return this.getOrganizationDataPoints(this._dataPoints);
+  get points() {
+    return this.getOrganizationDataPoints(this.#dataPoints);
   }
 }
 
