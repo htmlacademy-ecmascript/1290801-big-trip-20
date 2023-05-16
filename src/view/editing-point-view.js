@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { POINTS_TYPE } from '../const';
 import {formatToUpperCaseFirstLetter, formatDateToCalendarView} from '../utils';
 
@@ -161,25 +161,15 @@ function createEditingPointView(point, allDestinations) {
             </li>`;
 }
 
-export default class EditingPointView {
+export default class EditingPointView extends AbstractView{
   constructor({point}, allDestinations) {
+    super();
     this.point = point;
     this.allDestinations = allDestinations;
   }
 
-
-  getTemplate() {
+  get template() {
     return createEditingPointView(this.point, this.allDestinations);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
 }
