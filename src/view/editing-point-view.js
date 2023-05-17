@@ -4,7 +4,6 @@ import {formatToUpperCaseFirstLetter, formatDateToCalendarView} from '../utils';
 
 function createEditingPointView(point, allDestinations) {
   const {basePrice, dateFrom, dateTo, destination, offers, allOffersThisType, type} = point;
-
   function getDestinationsList (){
     let destinationsList = '';
     for (let i = 0; i < allDestinations.length; i++) {
@@ -162,14 +161,31 @@ function createEditingPointView(point, allDestinations) {
 }
 
 export default class EditingPointView extends AbstractView{
-  constructor({point}, allDestinations) {
+  #point = null;
+  #allDestinations = null;
+  #handleFormSubmit;
+
+  constructor({point, allDestinations, onFormSubmit}) {
     super();
-    this.point = point;
-    this.allDestinations = allDestinations;
+    this.#point = point;
+    this.#allDestinations = allDestinations;
+    this.#handleFormSubmit = onFormSubmit;
+
+    this.element.querySelector('form')
+      .addEventListener('submit', this.#formSubmitHandler);
+
+    //это временное решение чтобы просто закрывать форму
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#handleFormSubmit)
   }
 
   get template() {
-    return createEditingPointView(this.point, this.allDestinations);
+    return createEditingPointView(this.#point, this.#allDestinations);
   }
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 
 }
