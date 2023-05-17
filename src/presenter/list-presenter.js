@@ -8,7 +8,7 @@ import EditingPointView from '../view/editing-point-view';
 export default class ListPresenter {
   #listContainer = null;
   #pointsModel = null;
-  #destinationsModel = null
+  #destinationsModel = null;
 
 
   #listComponent = new ListView();
