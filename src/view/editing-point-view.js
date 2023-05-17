@@ -176,7 +176,7 @@ export default class EditingPointView extends AbstractView{
 
     //это временное решение чтобы просто закрывать форму
     this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#handleFormSubmit)
+      .addEventListener('click', this.#handleFormSubmit);
   }
 
   get template() {
