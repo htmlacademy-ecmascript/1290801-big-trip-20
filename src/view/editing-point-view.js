@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { POINTS_TYPE } from '../const';
-import {formatToUpperCaseFirstLetter, formatDateToCalendarView} from '../utils';
+import {formatDateToCalendarView, formatToUpperCaseFirstLetter} from '../utils/time';
 
 function createEditingPointView(point, allDestinations) {
   const {basePrice, dateFrom, dateTo, destination, offers, allOffersThisType, type} = point;

@@ -1,10 +1,10 @@
 import {
   getRandomArrayElement,
-  getRandomInt,
-  getRandomTime
-} from '../utils';
+  getRandomInt
+} from '../utils/utils';
 import {MOCK_POINT_COUNT, POINTS_TYPE} from '../const';
 import {getOffers} from './offers-mock';
+import {getRandomTime} from '../utils/time';
 
 // const pointDestination = ['Moscow', 'Texas', 'London', 'Tokyo', 'New-York'];
 const pointDestination = ['b8bbe9a6-9fde-4713-930b-8105ed8decbb', '0ac9df44-6b6d-4233-8d29-3e227a3e470f', '115c1f07-f50e-4811-8b30-6e386023d457', '1ad0d08f-7172-4c3b-9fa1-5da21ea95bb2', '8e1901ba-1e26-43fa-b740-95a8286ce345'];

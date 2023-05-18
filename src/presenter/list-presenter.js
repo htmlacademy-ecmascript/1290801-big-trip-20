@@ -3,7 +3,7 @@ import SortView from '../view/sort-view';
 import PointView from '../view/point-view';
 import ListView from '../view/list-view';
 import EditingPointView from '../view/editing-point-view';
-
+import NoPointsView from '../view/no-points-view';
 
 export default class ListPresenter {
   #listContainer = null;
@@ -23,14 +23,20 @@ export default class ListPresenter {
   init() {
     this.listPoints = this.#pointsModel.points;
     this.allDestinations = this.#destinationsModel.allDestinations;
+    this.#renderList()
+  }
 
+  #renderList() {
+    if (this.listPoints.length === 0){
+      render(new NoPointsView, this.#listContainer);
+      return
+    }
     render(this.#sortComponent, this.#listContainer);
     render(this.#listComponent, this.#listContainer);
     for (let i = 0; i < this.listPoints.length; i++) {
       this.#renderPoint(this.listPoints[i], this.allDestinations);
 
     }
-
   }
 
   #renderPoint(point, allDestinations) {
