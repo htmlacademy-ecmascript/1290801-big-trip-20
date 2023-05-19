@@ -23,13 +23,13 @@ export default class ListPresenter {
   init() {
     this.listPoints = this.#pointsModel.points;
     this.allDestinations = this.#destinationsModel.allDestinations;
-    this.#renderList()
+    this.#renderList();
   }
 
   #renderList() {
     if (this.listPoints.length === 0){
       render(new NoPointsView, this.#listContainer);
-      return
+      return;
     }
     render(this.#sortComponent, this.#listContainer);
     render(this.#listComponent, this.#listContainer);
