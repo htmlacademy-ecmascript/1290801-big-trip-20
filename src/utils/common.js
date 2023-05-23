@@ -11,8 +11,16 @@ function getRandomInt(max, min = 0) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+/** принимает массив и элемент.
+ * Проходит по массиву, ища в нем элемент с таким же id.
+ * Если находит - заменяет updatom этот элемент */
+function updateItem(items, update) {
+  return items.map((item) => item.id === update.id ? update : item)
+}
+
 
 export {
   getRandomArrayElement,
-  getRandomInt
+  getRandomInt,
+  updateItem,
 };
