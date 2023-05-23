@@ -1,5 +1,4 @@
 import {FILTER_TYPE} from '../const';
-// import {isTaskExpired, isTaskExpiringToday, isTaskRepeating} from './task';
 
 const filter = {
   [FILTER_TYPE.EVERYTHING]: (points) => points,
