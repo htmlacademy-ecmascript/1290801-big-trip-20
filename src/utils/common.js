@@ -15,7 +15,7 @@ function getRandomInt(max, min = 0) {
  * Проходит по массиву, ища в нем элемент с таким же id.
  * Если находит - заменяет updatom этот элемент */
 function updateItem(items, update) {
-  return items.map((item) => item.id === update.id ? update : item)
+  return items.map((item) => item.id === update.id ? update : item);
 }
 
 
