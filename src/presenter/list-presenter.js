@@ -2,7 +2,7 @@ import {render} from '../framework/render';
 import SortView from '../view/sort-view';
 import ListView from '../view/list-view';
 import NoPointsView from '../view/no-points-view';
-import PointPresenter from './pont-presenter';
+import PointPresenter from './point-presenter';
 import {updateItem} from '../utils/common';
 
 export default class ListPresenter {
@@ -31,12 +31,12 @@ export default class ListPresenter {
 
   #handleModeChange = () => {
     this.#pointsPresenters.forEach((presenter) => presenter.resetView());
-  }
+  };
 
   #handlePointChange = (updatedPoint) => {
     this.#allPoints = updateItem(this.#allPoints, updatedPoint);
-    this.#pointsPresenters.get(updatedPoint.id).init(updatedPoint, this.allDestinations)
-  }
+    this.#pointsPresenters.get(updatedPoint.id).init(updatedPoint, this.allDestinations);
+  };
 
   #renderList() {
     if (this.listPoints.length === 0){
@@ -63,10 +63,10 @@ export default class ListPresenter {
     this.#pointsPresenters.set(point.id, pointPresenter);
   }
 
-  #clearPointsList() {
-    this.#pointsPresenters.forEach((presenter) => presenter.destroy());
-    this.#pointsPresenters.clear();
-  }
+  // #clearPointsList() {
+  //   this.#pointsPresenters.forEach((presenter) => presenter.destroy());
+  //   this.#pointsPresenters.clear();
+  // }
 }
 
 

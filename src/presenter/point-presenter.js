@@ -5,9 +5,9 @@ import {remove, render, replace} from '../framework/render';
 const Mode = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING'
-}
+};
 
-export default class PontPresenter {
+export default class PointPresenter {
   #pointsContainer = null;
   #handleDataChange;
   #handleModeChange;
@@ -50,7 +50,7 @@ export default class PontPresenter {
     });
     if (prevPointComponent === null || prevPointEditComponent === null) {
       render(this.#pointComponent, this.#pointsContainer);
-      return
+      return;
     }
 
     // Проверка на наличие в DOM
@@ -66,14 +66,14 @@ export default class PontPresenter {
     remove(prevPointEditComponent);
   }
 
-  destroy() {
-    remove(this.#pointComponent);
-    remove(this.#pointEditComponent);
-  }
+  // destroy() {
+  //   remove(this.#pointComponent);
+  //   remove(this.#pointEditComponent);
+  // }
 
   resetView() {
     if (this.#mode !== Mode.DEFAULT) {
-      this.#replaceFormToPoint()
+      this.#replaceFormToPoint();
     }
   }
 
@@ -96,15 +96,15 @@ export default class PontPresenter {
       evt.preventDefault();
       this.#replaceFormToPoint();
     }
-  }
+  };
 
   #handleFavoriteClick = () => {
     this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
-  }
-
-  #handleFormSubmit = (point) => {
-    this.#handleDataChange(point);
-    this.#replaceFormToPoint();
   };
+
+  // #handleFormSubmit = (point) => {
+  //   this.#handleDataChange(point);
+  //   this.#replaceFormToPoint();
+  // };
 
 }
