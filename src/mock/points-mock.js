@@ -1,7 +1,7 @@
 import {
   getRandomArrayElement,
   getRandomInt
-} from '../utils/utils';
+} from '../utils/common';
 import {MOCK_POINT_COUNT, POINTS_TYPE} from '../const';
 import {getOffers} from './offers-mock';
 import {getRandomTime} from '../utils/time';

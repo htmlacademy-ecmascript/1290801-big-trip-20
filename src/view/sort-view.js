@@ -6,7 +6,8 @@ function createSortTemplate() {
               <input
                 id="sort-day"
                 class="trip-sort__input  visually-hidden"
-                type="radio" name="trip-sort"
+                type="radio"
+                name="trip-sort"
                 value="sort-day"
                 checked
               >

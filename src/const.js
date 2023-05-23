@@ -1,5 +1,5 @@
 const POINTS_TYPE = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
-const MOCK_POINT_COUNT = 10;
+const MOCK_POINT_COUNT = 2;
 
 const FILTER_TYPE = {
   EVERYTHING: 'everything',
