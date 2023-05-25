@@ -6,7 +6,7 @@ const sortData = Object.values(SORT_TYPE);
 
 function createSortItemTemplate(type, currentSortType) {
 
-  return `<div class="trip-sort__item  trip-sort__item--day">
+  return `<div class="trip-sort__item  trip-sort__item--${type}">
               <input
                 id="sort-${type}"
                 class="trip-sort__input  visually-hidden"
@@ -15,7 +15,7 @@ function createSortItemTemplate(type, currentSortType) {
                 value="sort-${type}"
                 ${type === currentSortType ? 'checked' : ''}
               >
-              <label class="trip-sort__btn" for="sort-day" data-sort-type="${type}">${type}</label>
+              <label class="trip-sort__btn" for="sort-${type}" data-sort-type="${type}">${type}</label>
             </div>`;
 }
 
