@@ -1,7 +1,10 @@
 import AbstractView from '../framework/view/abstract-view.js';
+import {SORT_TYPE} from '../const';
 
-function createSortItemTemplate(sortData, isChecked) {
-  const {type, count} = sortData;
+const sortData = Object.values(SORT_TYPE);
+
+
+function createSortItemTemplate(type, currentSortType) {
 
   return `<div class="trip-sort__item  trip-sort__item--day">
               <input
@@ -10,16 +13,15 @@ function createSortItemTemplate(sortData, isChecked) {
                 type="radio"
                 name="trip-sort"
                 value="sort-${type}"
-                ${isChecked ? 'checked' : ''}
-                ${count === 0 ? 'disabled' : ''}
+                ${type === currentSortType ? 'checked' : ''}
               >
-              <label class="trip-sort__btn" for="sort-day">${type}</label>
-            </div>`
+              <label class="trip-sort__btn" for="sort-day" data-sort-type="${type}">${type}</label>
+            </div>`;
 }
 
-function createSortTemplate(sortData) {
+function createSortTemplate(currentSortType) {
   const sortItemsTemplate = sortData
-    .map((filter, index) => createSortItemTemplate(filter, index === 0))
+    .map((sortType) => createSortItemTemplate(sortType, currentSortType))
     .join('');
 
   return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
@@ -28,8 +30,29 @@ function createSortTemplate(sortData) {
 }
 
 export default class SortView extends AbstractView{
-  get template() {
-    return createSortTemplate();
+  #currentSortType;
+  #handleSortTypeChange;
+
+  constructor({currentSortType, onSortTypeChange}) {
+    super();
+    this.#currentSortType = currentSortType;
+    this.#handleSortTypeChange = onSortTypeChange;
+
+    this.element.addEventListener('click', this.#sortTypeChangeHandler);
   }
+
+  get template() {
+    return createSortTemplate(this.#currentSortType);
+  }
+
+
+  #sortTypeChangeHandler = (event) => {
+    if (event.target.tagName !== 'LABEL') {
+      return;
+    }
+    event.preventDefault();
+    this.#handleSortTypeChange(event.target.dataset.sortType);
+
+  };
 
 }

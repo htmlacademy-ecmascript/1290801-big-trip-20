@@ -13,7 +13,6 @@ const siteMainElement = document.querySelector('.page-body');
 const siteHeaderFilterElement = siteMainElement.querySelector('.trip-controls__filters');
 const siteHeaderInfoElement = siteMainElement.querySelector('.trip-main');
 const siteBodyElement = siteMainElement.querySelector('.trip-events');
-
 const pointsModel = new PointsModel();
 const destinationsModel = new DestinationsModel();
 
