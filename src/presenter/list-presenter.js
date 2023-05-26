@@ -83,7 +83,7 @@ export default class ListPresenter {
       return;
     }
     this.#renderSort();
-    render(this.#listComponent, this.#listContainer, 'afterend');
+    render(this.#listComponent, this.#listContainer, 'beforeend');
 
     this.#renderPoints();
   }
@@ -94,7 +94,7 @@ export default class ListPresenter {
       onSortTypeChange: this.#handleSortTypeChange
     });
 
-    render(this.#sortComponent, this.#listContainer);
+    render(this.#sortComponent, this.#listContainer, 'afterbegin');
   }
 
   #renderPoints() {
