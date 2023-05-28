@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {getRandomInt} from './utils';
+import {getRandomInt} from './common';
 import duration from 'dayjs/plugin/duration';
 
 dayjs.extend(duration);
@@ -58,6 +58,12 @@ function formatToUpperCaseFirstLetter(string) {
   return string[0].toUpperCase() + string.slice(1);
 }
 
+/** возвращает продолжительность (в ms) между двумя датами */
+function dateDuration(dateA, dateB) {
+  return dayjs.duration(dayjs(dateB).diff(dayjs(dateA))).$ms;
+}
+
+
 export {
   formatToUpperCaseFirstLetter,
   formatDateToCalendarView,
@@ -65,5 +71,6 @@ export {
   trimDate,
   getRandomTime,
   timeDifference,
-  humanizeDate
+  humanizeDate,
+  dateDuration,
 };
