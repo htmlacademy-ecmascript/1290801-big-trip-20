@@ -16,7 +16,8 @@ export default class PointsModel {
         'destination': getDestination(point.destination),
         'isFavorite': point.isFavorite,
         'offers': point.offers,
-        'allOffersThisType' : getOffers(point.type).offers,
+        // 'allOffersThisType' : getOffers(point.type).offers,
+        'allOffers': getOffers(),
         'type': point.type
       };
 

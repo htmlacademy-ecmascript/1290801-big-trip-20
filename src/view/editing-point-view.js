@@ -1,9 +1,11 @@
-import AbstractView from '../framework/view/abstract-view.js';
-import { POINTS_TYPE } from '../const';
+import {POINTS_TYPE} from '../const';
 import {formatDateToCalendarView, formatToUpperCaseFirstLetter} from '../utils/time';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 
-function createEditingPointView(point, allDestinations) {
-  const {basePrice, dateFrom, dateTo, destination, offers, allOffersThisType, type} = point;
+function createEditingPointView({point}, allDestinations) {
+  const {basePrice, dateFrom, dateTo, destination, offers, allOffers, type} = point;
+
+  const allOffersThisType = allOffers.find((objWithOffers) => objWithOffers.type === type).offers
   function getDestinationsList (){
     let destinationsList = '';
     for (let i = 0; i < allDestinations.length; i++) {
@@ -160,32 +162,106 @@ function createEditingPointView(point, allDestinations) {
             </li>`;
 }
 
-export default class EditingPointView extends AbstractView{
-  #point = null;
+export default class EditingPointView extends AbstractStatefulView{
   #allDestinations = null;
   #handleFormSubmit;
 
   constructor({point, allDestinations, onFormSubmit}) {
     super();
-    this.#point = point;
+    this._setState(EditingPointView.parsePointToState({point}));
     this.#allDestinations = allDestinations;
     this.#handleFormSubmit = onFormSubmit;
 
+    this._restoreHandlers();
+  }
+
+  get template() {
+    return createEditingPointView(this._state, this.#allDestinations);
+  }
+
+  #formSubmitHandler = (event) => {
+    event.preventDefault();
+    this.#handleFormSubmit(EditingPointView.parseStateToPoint(this._state));
+  };
+
+  #typeInputChange = (event) => {
+    event.preventDefault();
+    //обработчик выбора типа точки
+    console.log(event.target);
+    this.updateElement({
+      point: {
+        ...this._state.point,
+        type: event.target.value,
+        offers: []
+      }
+    })
+  }
+
+  #destinationInputChange = (event) => {
+    event.preventDefault();
+    //обработчик выбора направления (города)
+    //я не очень уверен насчет такого решения
+    const selectedDestination = this.#allDestinations.find((destination) => destination.name === event.target.value)
+      || {name: event.target.value, id: '', description: '', pictures: []};
+    console.log(selectedDestination)
+    this.updateElement({
+      point: {
+        ...this._state.point,
+        destination: selectedDestination
+      }
+    })
+  }
+
+  #offerClickHandler = (event) => {
+    //обработчик выбора оферов
+    event.preventDefault();
+    const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+    console.log(checkBoxes.map((element) => element.id))
+    this._setState({
+      point: {
+        ...this._state.point,
+        offers: checkBoxes.map((element) => element.id)
+      }
+    })
+  }
+
+  #priceInputChange = (event) => {
+    event.preventDefault();
+    //обработчик изменения цены (перерисовывать компонент не нужно)
+    this._setState({
+      point : {
+        ...this._state.point,
+        basePrice: event.target.valueAsNumber
+      }
+    })
+  }
+
+  _restoreHandlers = () => {
+    //кнопка Save
     this.element.querySelector('form')
       .addEventListener('submit', this.#formSubmitHandler);
 
     //это временное решение чтобы просто закрывать форму
+    //стрелочка вверх
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#handleFormSubmit);
+
+    //выбор типа путешествия
+    this.element.querySelector('.event__type-group').addEventListener('change', this.#typeInputChange);
+
+    //выбор направления путешествия
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationInputChange);
+
+
   }
 
-  get template() {
-    return createEditingPointView(this.#point, this.#allDestinations);
+  static parsePointToState(point) {
+    return {...point}
   }
 
-  #formSubmitHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleFormSubmit();
-  };
+  static parseStateToPoint(state) {
+    return {...state}
+
+  }
 
 }

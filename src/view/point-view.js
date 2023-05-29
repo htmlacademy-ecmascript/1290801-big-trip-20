@@ -2,8 +2,9 @@ import AbstractView from '../framework/view/abstract-view.js';
 import {formatDateToDatetimeAttr, humanizeDate, timeDifference, trimDate} from '../utils/time';
 
 function createPointTemplate(point) {
-  const {basePrice, dateFrom, dateTo, destination, isFavorite, offers, allOffersThisType, type} = point;
+  const {basePrice, dateFrom, dateTo, destination, isFavorite, offers, allOffers, type} = point;
 
+  const allOffersThisType = allOffers.find((objWithOffers) => objWithOffers.type === type).offers;
   let offersList = '';
   if (offers.length > 0){
     offersList += '<ul class="event__selected-offers">';
