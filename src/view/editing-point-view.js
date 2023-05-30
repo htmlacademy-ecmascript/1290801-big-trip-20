@@ -248,7 +248,6 @@ export default class EditingPointView extends AbstractStatefulView{
     //кнопка Save
     this.element.querySelector('form')
       .addEventListener('submit', this.#formSubmitHandler);
-    //это временное решение чтобы просто закрывать форму
     //стрелочка вверх
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#rollupClickHandler);
