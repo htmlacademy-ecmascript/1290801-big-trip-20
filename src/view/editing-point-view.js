@@ -165,12 +165,14 @@ function createEditingPointView({point}, allDestinations) {
 export default class EditingPointView extends AbstractStatefulView{
   #allDestinations = null;
   #handleFormSubmit;
+  #handleResetForm;
 
-  constructor({point, allDestinations, onFormSubmit}) {
+  constructor({point, allDestinations, onFormSubmit, onFormReset}) {
     super();
     this._setState(EditingPointView.parsePointToState({point}));
     this.#allDestinations = allDestinations;
     this.#handleFormSubmit = onFormSubmit;
+    this.#handleResetForm = onFormReset;
 
     this._restoreHandlers();
   }
@@ -183,6 +185,12 @@ export default class EditingPointView extends AbstractStatefulView{
     event.preventDefault();
     this.#handleFormSubmit(EditingPointView.parseStateToPoint(this._state).point);
   };
+
+  reset(point) {
+    this.updateElement(
+      EditingPointView.parsePointToState({point})
+    )
+  }
 
   #typeInputChange = (event) => {
     event.preventDefault();
@@ -199,7 +207,7 @@ export default class EditingPointView extends AbstractStatefulView{
   #destinationInputChange = (event) => {
     event.preventDefault();
     //обработчик выбора направления (города)
-    //я не очень уверен насчет такого решения
+    //я не очень уверен насчет такого решения (по поводу того, что делать с городом не из списка)
     const selectedDestination = this.#allDestinations.find((destination) => destination.name === event.target.value)
       || {name: event.target.value, id: '', description: '', pictures: []};
     console.log(selectedDestination)
@@ -233,6 +241,10 @@ export default class EditingPointView extends AbstractStatefulView{
     })
   }
 
+  #rollupClickHandler = () => {
+    this.#handleResetForm()
+  }
+
   _restoreHandlers = () => {
     //кнопка Save
     this.element.querySelector('form')
@@ -241,7 +253,7 @@ export default class EditingPointView extends AbstractStatefulView{
     //это временное решение чтобы просто закрывать форму
     //стрелочка вверх
     this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#handleFormSubmit);
+      .addEventListener('click', this.#rollupClickHandler);
 
     //выбор типа путешествия
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeInputChange);
