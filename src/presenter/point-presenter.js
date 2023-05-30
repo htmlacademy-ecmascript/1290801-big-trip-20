@@ -44,9 +44,7 @@ export default class PointPresenter {
     this.#pointEditComponent = new EditingPointView({
       point,
       allDestinations,
-      onFormSubmit: () => {
-        this.#replaceFormToPoint();
-      }
+      onFormSubmit: this.#handleFormSubmit
     });
     if (prevPointComponent === null || prevPointEditComponent === null) {
       render(this.#pointComponent, this.#pointsContainer);
@@ -102,9 +100,12 @@ export default class PointPresenter {
     this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
   };
 
-  // #handleFormSubmit = (point) => {
-  //   this.#handleDataChange(point);
-  //   this.#replaceFormToPoint();
-  // };
+  #handleFormSubmit = (point) => {
+    this.#replaceFormToPoint();
+    this.#handleDataChange(point);
+
+
+
+  };
 
 }

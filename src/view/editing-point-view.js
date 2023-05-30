@@ -181,13 +181,12 @@ export default class EditingPointView extends AbstractStatefulView{
 
   #formSubmitHandler = (event) => {
     event.preventDefault();
-    this.#handleFormSubmit(EditingPointView.parseStateToPoint(this._state));
+    this.#handleFormSubmit(EditingPointView.parseStateToPoint(this._state).point);
   };
 
   #typeInputChange = (event) => {
     event.preventDefault();
     //обработчик выбора типа точки
-    console.log(event.target);
     this.updateElement({
       point: {
         ...this._state.point,
@@ -212,11 +211,9 @@ export default class EditingPointView extends AbstractStatefulView{
     })
   }
 
-  #offerClickHandler = (event) => {
+  #offerClickHandler = () => {
     //обработчик выбора оферов
-    event.preventDefault();
     const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-    console.log(checkBoxes.map((element) => element.id))
     this._setState({
       point: {
         ...this._state.point,
@@ -231,7 +228,7 @@ export default class EditingPointView extends AbstractStatefulView{
     this._setState({
       point : {
         ...this._state.point,
-        basePrice: event.target.valueAsNumber
+        basePrice: event.target.value
       }
     })
   }
@@ -252,6 +249,11 @@ export default class EditingPointView extends AbstractStatefulView{
     //выбор направления путешествия
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationInputChange);
 
+    //offers
+    this.element.querySelector('.event__available-offers').addEventListener('click', this.#offerClickHandler);
+
+    //price input
+    this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputChange)
 
   }
 
