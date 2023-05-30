@@ -69,7 +69,6 @@ export default class ListPresenter {
     if (this.#currentSortType === sortType) {
       return;
     }
-
     this.#sortPointTasks(sortType);
     remove(this.#sortComponent);
     this.#renderSort();

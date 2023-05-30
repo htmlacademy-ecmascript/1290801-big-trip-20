@@ -5,7 +5,7 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 function createEditingPointView({point}, allDestinations) {
   const {basePrice, dateFrom, dateTo, destination, offers, allOffers, type} = point;
 
-  const allOffersThisType = allOffers.find((objWithOffers) => objWithOffers.type === type).offers
+  const allOffersThisType = allOffers.find((objWithOffers) => objWithOffers.type === type).offers;
   function getDestinationsList (){
     let destinationsList = '';
     for (let i = 0; i < allDestinations.length; i++) {
@@ -189,7 +189,7 @@ export default class EditingPointView extends AbstractStatefulView{
   reset(point) {
     this.updateElement(
       EditingPointView.parsePointToState({point})
-    )
+    );
   }
 
   #typeInputChange = (event) => {
@@ -201,8 +201,8 @@ export default class EditingPointView extends AbstractStatefulView{
         type: event.target.value,
         offers: []
       }
-    })
-  }
+    });
+  };
 
   #destinationInputChange = (event) => {
     event.preventDefault();
@@ -210,14 +210,13 @@ export default class EditingPointView extends AbstractStatefulView{
     //я не очень уверен насчет такого решения (по поводу того, что делать с городом не из списка)
     const selectedDestination = this.#allDestinations.find((destination) => destination.name === event.target.value)
       || {name: event.target.value, id: '', description: '', pictures: []};
-    console.log(selectedDestination)
     this.updateElement({
       point: {
         ...this._state.point,
         destination: selectedDestination
       }
-    })
-  }
+    });
+  };
 
   #offerClickHandler = () => {
     //обработчик выбора оферов
@@ -227,8 +226,8 @@ export default class EditingPointView extends AbstractStatefulView{
         ...this._state.point,
         offers: checkBoxes.map((element) => element.id)
       }
-    })
-  }
+    });
+  };
 
   #priceInputChange = (event) => {
     event.preventDefault();
@@ -238,12 +237,12 @@ export default class EditingPointView extends AbstractStatefulView{
         ...this._state.point,
         basePrice: event.target.value
       }
-    })
-  }
+    });
+  };
 
   #rollupClickHandler = () => {
-    this.#handleResetForm()
-  }
+    this.#handleResetForm();
+  };
 
   _restoreHandlers = () => {
     //кнопка Save
@@ -265,16 +264,16 @@ export default class EditingPointView extends AbstractStatefulView{
     this.element.querySelector('.event__available-offers').addEventListener('click', this.#offerClickHandler);
 
     //price input
-    this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputChange)
+    this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputChange);
 
-  }
+  };
 
   static parsePointToState(point) {
-    return {...point}
+    return {...point};
   }
 
   static parseStateToPoint(state) {
-    return {...state}
+    return {...state};
 
   }
 
