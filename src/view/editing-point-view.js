@@ -248,21 +248,16 @@ export default class EditingPointView extends AbstractStatefulView{
     //кнопка Save
     this.element.querySelector('form')
       .addEventListener('submit', this.#formSubmitHandler);
-
     //это временное решение чтобы просто закрывать форму
     //стрелочка вверх
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#rollupClickHandler);
-
     //выбор типа путешествия
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeInputChange);
-
     //выбор направления путешествия
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationInputChange);
-
     //offers
     this.element.querySelector('.event__available-offers').addEventListener('click', this.#offerClickHandler);
-
     //price input
     this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputChange);
 
