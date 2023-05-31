@@ -17,6 +17,7 @@ const FILTER_TYPE = {
   FAVORITE: 'favorite'
 };
 
+
 export {
   POINTS_TYPE,
   MOCK_POINT_COUNT,

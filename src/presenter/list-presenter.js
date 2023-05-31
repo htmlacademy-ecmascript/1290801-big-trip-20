@@ -81,6 +81,7 @@ export default class ListPresenter {
       render(this.#noPointsComponent, this.#listContainer);
       return;
     }
+
     this.#renderSort();
     render(this.#listComponent, this.#listContainer, 'beforeend');
 

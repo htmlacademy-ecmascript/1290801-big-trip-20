@@ -174,7 +174,6 @@ export default class EditingPointView extends AbstractStatefulView{
     this.#allDestinations = allDestinations;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleResetForm = onFormReset;
-    console.log(this.point)
 
     this._restoreHandlers();
   }
@@ -266,7 +265,7 @@ export default class EditingPointView extends AbstractStatefulView{
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeInputChange);
     //выбор направления путешествия
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationInputChange);
-    //кнопки офферов
+    //offers
     this.element.querySelector('.event__available-offers').addEventListener('click', this.#offerClickHandler);
     //price input
     this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputChange);
