@@ -1,6 +1,11 @@
 import {POINTS_TYPE} from '../const';
 import {formatDateToCalendarView, formatToUpperCaseFirstLetter} from '../utils/time';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
+import flatpickr from 'flatpickr';
+import dayjs from 'dayjs';
+
+import 'flatpickr/dist/flatpickr.min.css';
+
 
 function createEditingPointView({point}, allDestinations) {
   const {basePrice, dateFrom, dateTo, destination, offers, allOffers, type} = point;
@@ -166,6 +171,8 @@ export default class EditingPointView extends AbstractStatefulView{
   #allDestinations = null;
   #handleFormSubmit;
   #handleResetForm;
+  #datePickerFrom;
+  #datePickerTo;
 
   constructor({point, allDestinations, onFormSubmit, onFormReset}) {
     super();
@@ -182,6 +189,34 @@ export default class EditingPointView extends AbstractStatefulView{
     return createEditingPointView(this._state, this.#allDestinations);
   }
 
+  #setDatePicker = () => {
+    const [dateFromElement, dateToElement] = this.element.querySelectorAll('.event__input--time');
+    this.#datePickerFrom = flatpickr(dateFromElement,
+      {
+        dateFormat: 'd/m/y H:i',
+        defaultDate: formatDateToCalendarView(this._state.point.dateFrom),
+        onClose: this.#dateFromChangeHandler,
+        enableTime: true,
+        maxDate: formatDateToCalendarView(this._state.point.dateTo),
+        locale: {
+          firstDayOfWeek: 1,
+        },
+        'time_24hr': true
+      });
+    this.#datePickerTo = flatpickr(dateToElement,
+      {
+        dateFormat: 'd/m/y H:i',
+        defaultDate: formatDateToCalendarView(this._state.point.dateTo),
+        onClose: this.#dateToChangeHandler,
+        enableTime: true,
+        minDate: formatDateToCalendarView(this._state.point.dateFrom),
+        locale: {
+          firstDayOfWeek: 1,
+        },
+        'time_24hr': true
+      });
+  };
+
   #formSubmitHandler = (event) => {
     event.preventDefault();
     if (JSON.stringify(this._state.point) === JSON.stringify(this.point)) {
@@ -195,6 +230,20 @@ export default class EditingPointView extends AbstractStatefulView{
     this.updateElement(
       EditingPointView.parsePointToState({point})
     );
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    if (this.#datePickerFrom) {
+      this.#datePickerFrom.destroy();
+      this.#datePickerFrom = null;
+    }
+
+    if (this.#datePickerTo) {
+      this.#datePickerTo.destroy();
+      this.#datePickerTo = null;
+    }
   }
 
   #typeInputChange = (event) => {
@@ -252,6 +301,26 @@ export default class EditingPointView extends AbstractStatefulView{
     this.#handleResetForm();
   };
 
+  #dateFromChangeHandler = ([userDate]) => {
+    this._setState({
+      point: {
+        ...this._state.point,
+        dateFrom: dayjs(userDate).format()
+      }
+    });
+    this.#datePickerTo.set('minDate', formatDateToCalendarView(this._state.point.dateFrom));
+  };
+
+  #dateToChangeHandler = ([userDate]) => {
+    this._setState({
+      point: {
+        ...this._state.point,
+        dateTo: dayjs(userDate).format()
+      }
+    });
+    this.#datePickerFrom.set('maxDate', formatDateToCalendarView(this._state.point.dateTo));
+  };
+
   _restoreHandlers = () => {
     //кнопка Save
     this.element.querySelector('form')
@@ -267,6 +336,8 @@ export default class EditingPointView extends AbstractStatefulView{
     this.element.querySelector('.event__available-offers').addEventListener('click', this.#offerClickHandler);
     //price input
     this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputChange);
+    //добавление календарей
+    this.#setDatePicker();
 
   };
 
