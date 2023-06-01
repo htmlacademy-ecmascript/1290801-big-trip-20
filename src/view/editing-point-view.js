@@ -169,6 +169,7 @@ export default class EditingPointView extends AbstractStatefulView{
 
   constructor({point, allDestinations, onFormSubmit, onFormReset}) {
     super();
+    this.point = {...point};
     this._setState(EditingPointView.parsePointToState({point}));
     this.#allDestinations = allDestinations;
     this.#handleFormSubmit = onFormSubmit;
@@ -183,6 +184,10 @@ export default class EditingPointView extends AbstractStatefulView{
 
   #formSubmitHandler = (event) => {
     event.preventDefault();
+    if (JSON.stringify(this._state.point) === JSON.stringify(this.point)) {
+      this.#handleResetForm();
+      return;
+    }
     this.#handleFormSubmit(EditingPointView.parseStateToPoint(this._state).point);
   };
 
@@ -207,9 +212,10 @@ export default class EditingPointView extends AbstractStatefulView{
   #destinationInputChange = (event) => {
     event.preventDefault();
     //обработчик выбора направления (города)
-    //я не очень уверен насчет такого решения (по поводу того, что делать с городом не из списка)
-    const selectedDestination = this.#allDestinations.find((destination) => destination.name === event.target.value)
-      || {name: event.target.value, id: '', description: '', pictures: []};
+    const selectedDestination = this.#allDestinations.find((destination) => destination.name === event.target.value);
+    if (!selectedDestination) {
+      return;
+    }
     this.updateElement({
       point: {
         ...this._state.point,
@@ -232,10 +238,12 @@ export default class EditingPointView extends AbstractStatefulView{
   #priceInputChange = (event) => {
     event.preventDefault();
     //обработчик изменения цены (перерисовывать компонент не нужно)
+    const newPrice = parseInt(event.target.value.replace(/[^0-9]/g,'') || '0', 10);
+
     this._setState({
       point : {
         ...this._state.point,
-        basePrice: event.target.value
+        basePrice: newPrice
       }
     });
   };
@@ -255,7 +263,7 @@ export default class EditingPointView extends AbstractStatefulView{
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeInputChange);
     //выбор направления путешествия
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationInputChange);
-    //offers
+    //кнопки офферов
     this.element.querySelector('.event__available-offers').addEventListener('click', this.#offerClickHandler);
     //price input
     this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputChange);
@@ -272,3 +280,4 @@ export default class EditingPointView extends AbstractStatefulView{
   }
 
 }
+
