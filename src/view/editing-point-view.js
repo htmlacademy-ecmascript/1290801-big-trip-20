@@ -185,7 +185,6 @@ export default class EditingPointView extends AbstractStatefulView{
   #formSubmitHandler = (event) => {
     event.preventDefault();
     if (JSON.stringify(this._state.point) === JSON.stringify(this.point)) {
-      console.log('выход из редактирования без изменений')
       this.#handleResetForm();
       return;
     }
@@ -213,7 +212,6 @@ export default class EditingPointView extends AbstractStatefulView{
   #destinationInputChange = (event) => {
     event.preventDefault();
     //обработчик выбора направления (города)
-    //я не очень уверен насчет такого решения (по поводу того, что делать с городом не из списка)
     const selectedDestination = this.#allDestinations.find((destination) => destination.name === event.target.value);
     if (!selectedDestination) {
       return;
@@ -240,7 +238,7 @@ export default class EditingPointView extends AbstractStatefulView{
   #priceInputChange = (event) => {
     event.preventDefault();
     //обработчик изменения цены (перерисовывать компонент не нужно)
-    const newPrice = parseInt(event.target.value.replace(/[^0-9]/g,"") || '0');
+    const newPrice = parseInt(event.target.value.replace(/[^0-9]/g,'') || '0', 10);
 
     this._setState({
       point : {
@@ -265,7 +263,7 @@ export default class EditingPointView extends AbstractStatefulView{
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeInputChange);
     //выбор направления путешествия
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationInputChange);
-    //offers
+    //кнопки офферов
     this.element.querySelector('.event__available-offers').addEventListener('click', this.#offerClickHandler);
     //price input
     this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputChange);
