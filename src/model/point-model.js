@@ -1,8 +1,9 @@
+import Observable from '../framework/observable';
 import {getRandomPointsMock} from '../mock/points-mock';
 import {getDestination} from '../mock/destination-mock';
 import {getOffers} from '../mock/offers-mock';
 
-export default class PointsModel {
+export default class PointsModel extends Observable{
   #dataPoints = getRandomPointsMock();
 
   getOrganizationDataPoints(_dataPoints) {
