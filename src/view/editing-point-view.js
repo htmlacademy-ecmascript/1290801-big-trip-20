@@ -171,16 +171,18 @@ export default class EditingPointView extends AbstractStatefulView{
   #allDestinations = null;
   #handleFormSubmit;
   #handleResetForm;
+  #handleDeleteClick;
   #datePickerFrom;
   #datePickerTo;
 
-  constructor({point, allDestinations, onFormSubmit, onFormReset}) {
+  constructor({point, allDestinations, onFormSubmit, onFormReset, onDeleteClick}) {
     super();
     this.point = {...point};
     this._setState(EditingPointView.parsePointToState({point}));
     this.#allDestinations = allDestinations;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleResetForm = onFormReset;
+    this.#handleDeleteClick = onDeleteClick;
 
     this._restoreHandlers();
   }
@@ -225,6 +227,11 @@ export default class EditingPointView extends AbstractStatefulView{
     }
     this.#handleFormSubmit(EditingPointView.parseStateToPoint(this._state).point);
   };
+
+  #formDeleteClickHandler = (event) => {
+    event.preventDefault();
+    this.#handleDeleteClick(EditingPointView.parseStateToPoint(this._state).point)
+  }
 
   reset(point) {
     this.updateElement(
@@ -325,6 +332,9 @@ export default class EditingPointView extends AbstractStatefulView{
     //кнопка Save
     this.element.querySelector('form')
       .addEventListener('submit', this.#formSubmitHandler);
+    //кнопка Delete
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#formDeleteClickHandler)
     //стрелочка вверх
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#rollupClickHandler);
