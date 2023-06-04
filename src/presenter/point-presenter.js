@@ -46,7 +46,8 @@ export default class PointPresenter {
       point,
       allDestinations,
       onFormSubmit: this.#handleFormSubmit,
-      onFormReset: this.#handleFormReset
+      onFormReset: this.#handleFormReset,
+      onDeleteClick: this.#handleDeleteClick
     });
     if (prevPointComponent === null || prevPointEditComponent === null) {
       render(this.#pointComponent, this.#pointsContainer);
@@ -121,5 +122,13 @@ export default class PointPresenter {
     this.#pointEditComponent.reset(this.#point);
     this.#replaceFormToPoint();
   };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point
+    );
+  }
 
 }
