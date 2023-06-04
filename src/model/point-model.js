@@ -29,7 +29,7 @@ export default class PointsModel extends Observable{
   }
 
   get points() {
-    return this.#orderedData
+    return this.#orderedData;
   }
 
   updatePoint(updateType, update) {
