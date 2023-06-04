@@ -17,10 +17,24 @@ const FILTER_TYPE = {
   FAVORITE: 'favorite'
 };
 
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
 
 export {
   POINTS_TYPE,
   MOCK_POINT_COUNT,
   FILTER_TYPE,
-  SORT_TYPE
+  SORT_TYPE,
+  UserAction,
+  UpdateType
 };
