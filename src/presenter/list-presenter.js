@@ -51,7 +51,6 @@ export default class ListPresenter {
   };
 
   #handleViewAction = (actionType, updateType, update) => {
-    console.log(actionType, updateType, update);
     switch (actionType) {
       case UserAction.UPDATE_POINT:
         this.#pointsModel.updatePoint(updateType, update);
@@ -60,13 +59,12 @@ export default class ListPresenter {
         this.#pointsModel.addPoint(updateType, update);
         break;
       case UserAction.DELETE_POINT:
-        this.#pointsModel.deletePoint(updateType, update)
+        this.#pointsModel.deletePoint(updateType, update);
         break;
     }
-  }
+  };
 
   #handleModelEvent = (updateType, data) => {
-    console.log(updateType, data);
     switch (updateType) {
       case UpdateType.PATCH:
         // обновить часть списка (точку), пока используется только для добавления в избранное
@@ -83,7 +81,7 @@ export default class ListPresenter {
         this.#renderList();
         break;
     }
-  }
+  };
 
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
@@ -91,7 +89,7 @@ export default class ListPresenter {
     }
     this.#currentSortType = sortType;
     this.#clearList();
-    this.#renderList()
+    this.#renderList();
 
   };
 
@@ -117,7 +115,7 @@ export default class ListPresenter {
   }
 
   #renderPoints() {
-    this.points.forEach((point) => this.#renderPoint(point, this.allDestinations))
+    this.points.forEach((point) => this.#renderPoint(point, this.allDestinations));
   }
 
   #renderPoint(point, allDestinations) {
