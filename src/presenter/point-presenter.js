@@ -1,6 +1,7 @@
 import PointView from '../view/point-view';
 import EditingPointView from '../view/editing-point-view';
 import {remove, render, replace} from '../framework/render';
+import {UserAction, UpdateType} from '../const';
 
 const MODE = {
   DEFAULT: 'DEFAULT',
@@ -99,12 +100,21 @@ export default class PointPresenter {
   };
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.PATCH,
+      {...this.#point, isFavorite: !this.#point.isFavorite}
+    );
   };
 
   #handleFormSubmit = (point) => {
     this.#replaceFormToPoint();
-    this.#handleDataChange(point);
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      point
+    )
+
   };
 
   #handleFormReset = () => {
