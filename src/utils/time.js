@@ -65,17 +65,17 @@ function dateDuration(dateA, dateB) {
 
 /** возвращает true если data в будущем */
 function checkFuture(date) {
-  return dayjs(new Date()).diff(dayjs(date)) < 0
+  return dayjs(new Date()).diff(dayjs(date)) < 0;
 }
 
 /** возвращает true если текущий момент находится в промежутке между dateFrom и dateTo*/
 function checkPresent(dateFrom, dateTo) {
-  return dayjs(new Date()).diff(dayjs(dateTo)) < 0 && dayjs(new Date()).diff(dayjs(dateFrom)) > 0
+  return dayjs(new Date()).diff(dayjs(dateTo)) < 0 && dayjs(new Date()).diff(dayjs(dateFrom)) > 0;
 }
 
 /** возвращает true если data в прошлом */
 function checkPast(date) {
-  return dayjs(new Date()).diff(dayjs(date)) > 0
+  return dayjs(new Date()).diff(dayjs(date)) > 0;
 }
 
 

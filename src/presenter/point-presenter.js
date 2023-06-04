@@ -100,6 +100,7 @@ export default class PointPresenter {
     }
   };
 
+  //этот обработчик можно сделать PATCH-ем, если убрать из фильтров раздел FAVORITE
   #handleFavoriteClick = () => {
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
@@ -129,6 +130,6 @@ export default class PointPresenter {
       UpdateType.MINOR,
       point
     );
-  }
+  };
 
 }

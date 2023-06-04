@@ -230,8 +230,8 @@ export default class EditingPointView extends AbstractStatefulView{
 
   #formDeleteClickHandler = (event) => {
     event.preventDefault();
-    this.#handleDeleteClick(EditingPointView.parseStateToPoint(this._state).point)
-  }
+    this.#handleDeleteClick(EditingPointView.parseStateToPoint(this._state).point);
+  };
 
   reset(point) {
     this.updateElement(
@@ -334,7 +334,7 @@ export default class EditingPointView extends AbstractStatefulView{
       .addEventListener('submit', this.#formSubmitHandler);
     //кнопка Delete
     this.element.querySelector('.event__reset-btn')
-      .addEventListener('click', this.#formDeleteClickHandler)
+      .addEventListener('click', this.#formDeleteClickHandler);
     //стрелочка вверх
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#rollupClickHandler);
