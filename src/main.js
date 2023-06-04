@@ -1,6 +1,5 @@
 import {render} from './framework/render.js';
 import TripInfoView from './view/trip-info-view';
-import FilterView from './view/filter-view.js';
 import ListPresenter from './presenter/list-presenter';
 import FilterPresenter from './presenter/filter-presenter';
 import {RenderPosition} from './render.js';
@@ -32,9 +31,9 @@ const filterPresenter = new FilterPresenter({
   filterContainer:  siteHeaderFilterElement,
   filterModel,
   pointsModel
-})
+});
 
 render(new TripInfoView(tripInfo), siteHeaderInfoElement, RenderPosition.AFTERBEGIN);
-filterPresenter.init()
+filterPresenter.init();
 
 listPresenter.init();
