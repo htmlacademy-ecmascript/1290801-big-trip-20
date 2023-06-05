@@ -3,7 +3,7 @@ import SortView from '../view/sort-view';
 import ListView from '../view/list-view';
 import NoPointsView from '../view/no-points-view';
 import PointPresenter from './point-presenter';
-import {SORT_TYPE, UpdateType, UserAction} from '../const';
+import {SORT_TYPE, FILTER_TYPE, UpdateType, UserAction} from '../const';
 import {sortPointsEvent, sortPointsOffers, sortPointsPrice, sortPointsTime} from '../utils/sort';
 import {filter} from '../utils/filter';
 
@@ -15,10 +15,11 @@ export default class ListPresenter {
 
   #listComponent = new ListView();
   #sortComponent = null;
-  #noPointsComponent = new NoPointsView();
+  #noPointsComponent = null;
 
   #pointsPresenters = new Map;
   #currentSortType = SORT_TYPE.DAY;
+  #filterType = FILTER_TYPE.EVERYTHING;
 
   constructor({listContainer, pointsModel, destinationsModel, filterModel}) {
     this.#listContainer = listContainer;
@@ -31,9 +32,9 @@ export default class ListPresenter {
   }
 
   get points() {
-    const filterType = this.#filterModel.filter;
+    this.#filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points;
-    const filteredPoints = filter[filterType](points);
+    const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
       case SORT_TYPE.EVENT:
@@ -103,7 +104,7 @@ export default class ListPresenter {
 
   #renderList() {
     if (this.points.length === 0) {
-      render(this.#noPointsComponent, this.#listContainer);
+      this.#renderNoPoints();
       return;
     }
 
@@ -120,6 +121,14 @@ export default class ListPresenter {
     });
 
     render(this.#sortComponent, this.#listContainer, 'afterbegin');
+  }
+
+  #renderNoPoints() {
+    this.#noPointsComponent = new NoPointsView({
+      filterType: this.#filterType
+    });
+
+    render(this.#noPointsComponent, this.#listContainer);
   }
 
   #renderPoints() {
