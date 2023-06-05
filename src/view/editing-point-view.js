@@ -9,8 +9,8 @@ import 'flatpickr/dist/flatpickr.min.css';
 
 function createEditingPointView({point}, allDestinations) {
   const {basePrice, dateFrom, dateTo, destination, offers, allOffers, type} = point;
-
   const allOffersThisType = allOffers.find((objWithOffers) => objWithOffers.type === type).offers;
+
   function getDestinationsList (){
     let destinationsList = '';
     for (let i = 0; i < allDestinations.length; i++) {
@@ -62,10 +62,26 @@ function createEditingPointView({point}, allDestinations) {
               for="event-type-${checkBoxType}-1"
             >${formatToUpperCaseFirstLetter(checkBoxType)}
             </label>
-        </div>
-`;
+        </div>`;
     }
     return pointsCheckBoxes;
+  }
+
+  function getImagesFromDestinations() {
+    if (destination.pictures.length === 0) {
+      return '';
+    }
+    let images = '';
+    destination.pictures.forEach((img) => {
+      images += `<img class="event__photo" src="${img.src}" alt="Event photo">`;
+    });
+
+    return `
+      <div class="event__photos-container">
+        <div class="event__photos-tape">
+          ${images}
+        </div>
+      </div>`;
   }
 
   return `<li class="trip-events__item">
@@ -161,6 +177,7 @@ function createEditingPointView({point}, allDestinations) {
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${destination.description}</p>
+                    ${getImagesFromDestinations()}
                   </section>
                 </section>
               </form>
