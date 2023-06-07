@@ -22,6 +22,7 @@ const tripInfo = getTripInfo();
 
 const listPresenter = new ListPresenter({
   listContainer: siteBodyElement,
+  newPointButtonContainer: siteHeaderInfoElement,
   pointsModel,
   destinationsModel,
   filterModel

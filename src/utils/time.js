@@ -48,9 +48,9 @@ function formatDateToDatetimeAttr(date) {
   return dayjs(date).format('YYYY-MM-DD');
 }
 
-/** форматирует дату для "календарного вида" */
+/** форматирует дату для "календарного вида". если даты нет (пустая строка), вернется сообщение 'enter date'*/
 function formatDateToCalendarView(date) {
-  return dayjs(date).format('DD/MM/YY HH:mm');
+  return date ? dayjs(date).format('DD/MM/YY HH:mm') : '';
 }
 
 /** принимает строку и возвращает ее, но с первой заглавной буквой */
