@@ -3,15 +3,33 @@ import {formatDateToCalendarView, formatToUpperCaseFirstLetter} from '../utils/t
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
 import dayjs from 'dayjs';
+import he from 'he';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
+const EMPTY_POINT = {
+  id: '',
+  dateFrom: '',
+  dateTo: '',
+  basePrice: 0,
+  allOffers: '',
+  isFavorite: false,
+  offers: [],
+  type: 'taxi',
+  destination: {
+    description: '',
+    id: '',
+    name: '',
+    pictures: []
+  }
+};
 
 function createEditingPointView({point}, allDestinations) {
   const {basePrice, dateFrom, dateTo, destination, offers, allOffers, type} = point;
   const allOffersThisType = allOffers.find((objWithOffers) => objWithOffers.type === type).offers;
+  const isNewPoint = !point.id;
 
-  function getDestinationsList (){
+  function getDestinationsList() {
     let destinationsList = '';
     for (let i = 0; i < allDestinations.length; i++) {
       destinationsList += `<option value="${allDestinations[i].name}"></option>`;
@@ -19,7 +37,7 @@ function createEditingPointView({point}, allDestinations) {
     return destinationsList;
   }
 
-  function getOffersList (){
+  function getOffersList() {
     let offersList = '';
     for (let i = 0; i < allOffersThisType.length; i++) {
       const isChecked = !!offers.find((offer) => offer === allOffersThisType[i].id);
@@ -43,7 +61,7 @@ function createEditingPointView({point}, allDestinations) {
     return offersList;
   }
 
-  function getPointsCheckBoxes () {
+  function getPointsCheckBoxes() {
     let pointsCheckBoxes = '';
     for (let i = 0; i < POINTS_TYPE.length; i++) {
       const checkBoxType = POINTS_TYPE[i];
@@ -73,7 +91,7 @@ function createEditingPointView({point}, allDestinations) {
     }
     let images = '';
     destination.pictures.forEach((img) => {
-      images += `<img class="event__photo" src="${img.src}" alt="Event photo">`;
+      images += `<img class="event__photo" src="${img.src}" alt="${img.description}">`;
     });
 
     return `
@@ -117,7 +135,7 @@ function createEditingPointView({point}, allDestinations) {
                       id="event-destination-1"
                       type="text"
                       name="event-destination"
-                      value="${destination.name}"
+                      value="${he.encode(destination.name)}"
                       list="destination-list-1"
                     >
                     <datalist id="destination-list-1">
@@ -160,8 +178,8 @@ function createEditingPointView({point}, allDestinations) {
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-                  <button class="event__reset-btn" type="reset">Delete</button>
-                  <button class="event__rollup-btn" type="button">
+                  <button class="event__reset-btn" type="reset">${isNewPoint ? 'Cancel' : 'Delete'}</button>
+                  ${isNewPoint ? '' : '<button class="event__rollup-btn" type="button">'}
                     <span class="visually-hidden">Open event</span>
                   </button>
                 </header>
@@ -184,22 +202,30 @@ function createEditingPointView({point}, allDestinations) {
             </li>`;
 }
 
-export default class EditingPointView extends AbstractStatefulView{
+export default class EditingPointView extends AbstractStatefulView {
   #allDestinations = null;
   #handleFormSubmit;
   #handleResetForm;
   #handleDeleteClick;
   #datePickerFrom;
   #datePickerTo;
+  #allOffers;
 
-  constructor({point, allDestinations, onFormSubmit, onFormReset, onDeleteClick}) {
+  constructor({point = EMPTY_POINT, allDestinations, onFormSubmit, onFormReset, onDeleteClick, allOffers = []}) {
     super();
-    this.point = {...point};
-    this._setState(EditingPointView.parsePointToState({point}));
     this.#allDestinations = allDestinations;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleResetForm = onFormReset;
     this.#handleDeleteClick = onDeleteClick;
+    this.#allOffers = allOffers;
+
+    if (allOffers.length > 0){
+      EMPTY_POINT.allOffers = this.#allOffers;
+    }
+
+    this.point = {...point};
+    this._setState(EditingPointView.parsePointToState({point}));
+
 
     this._restoreHandlers();
   }
@@ -238,7 +264,7 @@ export default class EditingPointView extends AbstractStatefulView{
 
   #formSubmitHandler = (event) => {
     event.preventDefault();
-    if (JSON.stringify(this._state.point) === JSON.stringify(this.point)) {
+    if (JSON.stringify(this._state.point) === JSON.stringify(this.point) && this._state.point.id) {
       this.#handleResetForm();
       return;
     }
@@ -311,10 +337,10 @@ export default class EditingPointView extends AbstractStatefulView{
   #priceInputChange = (event) => {
     event.preventDefault();
     //обработчик изменения цены (перерисовывать компонент не нужно)
-    const newPrice = parseInt(event.target.value.replace(/[^0-9]/g,'') || '0', 10);
+    const newPrice = parseInt(event.target.value.replace(/[^0-9]/g, '') || '0', 10);
 
     this._setState({
-      point : {
+      point: {
         ...this._state.point,
         basePrice: newPrice
       }
@@ -354,12 +380,12 @@ export default class EditingPointView extends AbstractStatefulView{
       .addEventListener('click', this.#formDeleteClickHandler);
     //стрелочка вверх
     this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#rollupClickHandler);
+      ?.addEventListener('click', this.#rollupClickHandler);
     //выбор типа путешествия
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeInputChange);
     //выбор направления путешествия
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationInputChange);
-    //кнопки офферов
+    //кнопки offers
     this.element.querySelector('.event__available-offers').addEventListener('click', this.#offerClickHandler);
     //price input
     this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputChange);

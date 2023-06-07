@@ -73,5 +73,9 @@ export default class PointsModel extends Observable{
     this._notify(updateType, update);
 
   }
+
+  get offers () {
+    return getOffers()
+  }
 }
 

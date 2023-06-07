@@ -1,5 +1,5 @@
 const POINTS_TYPE = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
-const MOCK_POINT_COUNT = 3;
+const MOCK_POINT_COUNT = 0;
 
 const SORT_TYPE = {
   DAY: 'day',
