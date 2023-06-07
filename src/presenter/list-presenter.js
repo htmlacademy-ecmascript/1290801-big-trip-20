@@ -67,7 +67,7 @@ export default class ListPresenter {
   init() {
     this.allDestinations = this.#destinationsModel.allDestinations;
     this.#newPointButton = new NewPointButtonView({onClick: this.#newPointButtonClickHandler});
-    render(this.#newPointButton, this.#newPointButtonContainer, 'beforeend')
+    render(this.#newPointButton, this.#newPointButtonContainer, 'beforeend');
     this.#renderList();
   }
 
@@ -180,12 +180,12 @@ export default class ListPresenter {
     this.#newPointButton.element.disabled = true;
     this.#filterModel.setFilter(UpdateType.MAJOR, FILTER_TYPE.EVERYTHING);
     this.#newPointPresenter.init();
-  }
+  };
 
   #newPointDestroyHandler = () => {
     this.#newPointButton.element.disabled = false;
     this.#filterModel.setFilter(UpdateType.MAJOR, FILTER_TYPE.EVERYTHING);
-  }
+  };
 
 
 }

@@ -1,6 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {formatDateToDatetimeAttr, humanizeDate, timeDifference, trimDate} from '../utils/time';
-import he from 'he';
 function createPointTemplate(point) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, offers, allOffers, type} = point;
 

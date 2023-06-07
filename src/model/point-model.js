@@ -75,7 +75,7 @@ export default class PointsModel extends Observable{
   }
 
   get offers () {
-    return getOffers()
+    return getOffers();
   }
 }
 
