@@ -2,7 +2,6 @@ import Observable from '../framework/observable';
 import {getRandomPointsMock} from '../mock/points-mock';
 import {getDestination} from '../mock/destination-mock';
 import {getOffers} from '../mock/offers-mock';
-import {re} from '@babel/core/lib/vendor/import-meta-resolve';
 
 export default class PointsModel extends Observable{
   #pointsApiService;
@@ -45,16 +44,16 @@ export default class PointsModel extends Observable{
   #adaptToClient(point) {
     const adaptedPoint = {
       ...point,
-      basePrice: point['base-price'],
-      dateTo: point['date-to'],
-      dateFrom: point['date-from'],
-      isFavorite: point['is-favorite'],
+      basePrice: point['base_price'],
+      dateTo: point['date_to'],
+      dateFrom: point['date_from'],
+      isFavorite: point['is_favorite'],
     };
 
-    delete adaptedPoint['base-price'];
-    delete adaptedPoint['date-to'];
-    delete adaptedPoint['date-from'];
-    delete adaptedPoint['is-favorite'];
+    delete adaptedPoint['base_price'];
+    delete adaptedPoint['date_to'];
+    delete adaptedPoint['date_from'];
+    delete adaptedPoint['is_favorite'];
 
     return adaptedPoint;
   }
