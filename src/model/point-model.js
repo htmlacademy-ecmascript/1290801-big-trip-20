@@ -2,10 +2,20 @@ import Observable from '../framework/observable';
 import {getRandomPointsMock} from '../mock/points-mock';
 import {getDestination} from '../mock/destination-mock';
 import {getOffers} from '../mock/offers-mock';
+import {re} from '@babel/core/lib/vendor/import-meta-resolve';
 
 export default class PointsModel extends Observable{
+  #pointsApiService;
   #dataPoints = getRandomPointsMock();
   #orderedData = this.getOrganizationDataPoints(this.#dataPoints);
+
+  constructor({pointsApiService}) {
+    super();
+    this.#pointsApiService = pointsApiService;
+    this.#pointsApiService.points.then((points) => {
+      console.log(points.map(this.#adaptToClient))
+    })
+  }
 
   getOrganizationDataPoints(_dataPoints) {
     const orderedData = [];
@@ -31,6 +41,24 @@ export default class PointsModel extends Observable{
   get points() {
     return this.#orderedData;
   }
+
+  #adaptToClient(point) {
+    const adaptedPoint = {
+      ...point,
+      basePrice: point['base-price'],
+      dateTo: point['date-to'],
+      dateFrom: point['date-from'],
+      isFavorite: point['is-favorite'],
+    };
+
+    delete adaptedPoint['base-price'];
+    delete adaptedPoint['date-to'];
+    delete adaptedPoint['date-from'];
+    delete adaptedPoint['is-favorite'];
+
+    return adaptedPoint;
+  }
+
 
   updatePoint(updateType, update) {
     const index = this.#orderedData.findIndex((point) => point.id === update.id);
