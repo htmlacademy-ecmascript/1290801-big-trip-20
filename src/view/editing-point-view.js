@@ -25,6 +25,9 @@ const EMPTY_POINT = {
 };
 
 function createEditingPointView({point}, allDestinations) {
+  // console.log(point)
+  // console.log('d')
+  // console.log(allDestinations)
   const {basePrice, dateFrom, dateTo, destination, offers, allOffers, type} = point;
   const allOffersThisType = allOffers.find((objWithOffers) => objWithOffers.type === type).offers;
   const isNewPoint = !point.id;

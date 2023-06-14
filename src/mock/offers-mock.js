@@ -233,9 +233,11 @@ const mockOffers = [
 
 /** Возвращает массив офферов определенного типа. Либо (если указать type) конкретного*/
 function getOffers(type){
+  console.log('o mock')
   if (!type) {
     return mockOffers;
   } else {
+    console.log('ЭТО НИКОГДА НЕ ПРОИСХОДИТ')
     return mockOffers.find((objWithOffers) => objWithOffers.type === type);
   }
 }

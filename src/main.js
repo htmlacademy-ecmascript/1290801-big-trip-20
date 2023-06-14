@@ -22,7 +22,7 @@ const pointsModel = new PointsModel({
 });
 
 // скорее всего destinationsModel перенесу в pointsModel
-const destinationsModel = new DestinationsModel();
+// const destinationsModel = new DestinationsModel();
 const filterModel = new FilterModel();
 
 const tripInfo = getTripInfo();
@@ -31,7 +31,7 @@ const listPresenter = new ListPresenter({
   listContainer: siteBodyElement,
   newPointButtonContainer: siteHeaderInfoElement,
   pointsModel,
-  destinationsModel,
+  // destinationsModel,
   filterModel
 });
 
@@ -45,3 +45,4 @@ render(new TripInfoView(tripInfo), siteHeaderInfoElement, RenderPosition.AFTERBE
 filterPresenter.init();
 
 listPresenter.init();
+pointsModel.init();

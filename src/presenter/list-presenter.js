@@ -13,7 +13,6 @@ export default class ListPresenter {
   #listContainer = null;
   #newPointButtonContainer = null;
   #pointsModel = null;
-  #destinationsModel = null;
   #filterModel = null;
 
   #listComponent = new ListView();
@@ -26,20 +25,11 @@ export default class ListPresenter {
   #currentSortType = SORT_TYPE.DAY;
   #filterType = FILTER_TYPE.EVERYTHING;
 
-  constructor({listContainer, newPointButtonContainer, pointsModel, destinationsModel, filterModel}) {
+  constructor({listContainer, newPointButtonContainer, pointsModel, filterModel}) {
     this.#listContainer = listContainer;
     this.#newPointButtonContainer = newPointButtonContainer;
     this.#pointsModel = pointsModel;
-    this.#destinationsModel = destinationsModel;
     this.#filterModel = filterModel;
-
-    this.#newPointPresenter = new NewPointPresenter({
-      pointsContainer: this.#listComponent.element,
-      onDataChange: this.#handleViewAction,
-      onDestroy: this.#newPointDestroyHandler,
-      allDestinations: this.#destinationsModel.allDestinations,
-      allOffers: this.#pointsModel.offers,
-    });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -65,7 +55,6 @@ export default class ListPresenter {
   }
 
   init() {
-    this.allDestinations = this.#destinationsModel.allDestinations;
     this.#newPointButton = new NewPointButtonView({onClick: this.#newPointButtonClickHandler});
     render(this.#newPointButton, this.#newPointButtonContainer, 'beforeend');
     this.#renderList();
@@ -106,8 +95,26 @@ export default class ListPresenter {
         this.#clearList({resetSortType: true});
         this.#renderList();
         break;
+      case UpdateType.INIT:
+        // запускается при инициализации модели
+        this.#clearList();
+        this.#updateDestinationsAndOffersHandler();
+        this.#renderList();
     }
   };
+
+  #updateDestinationsAndOffersHandler() {
+    this.allDestinations = this.#pointsModel.destinations;
+
+    this.#newPointPresenter = new NewPointPresenter({
+      pointsContainer: this.#listComponent.element,
+      onDataChange: this.#handleViewAction,
+      onDestroy: this.#newPointDestroyHandler,
+      allDestinations: this.#pointsModel.destinations,
+      allOffers: this.#pointsModel.offers,
+    });
+
+  }
 
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
@@ -186,6 +193,8 @@ export default class ListPresenter {
     this.#newPointButton.element.disabled = false;
     this.#filterModel.setFilter(UpdateType.MAJOR, FILTER_TYPE.EVERYTHING);
   };
+
+
 
 
 }

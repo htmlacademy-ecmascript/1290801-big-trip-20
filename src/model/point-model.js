@@ -2,33 +2,28 @@ import Observable from '../framework/observable';
 import {getRandomPointsMock} from '../mock/points-mock';
 import {getDestination} from '../mock/destination-mock';
 import {getOffers} from '../mock/offers-mock';
+import {UpdateType} from '../const';
 
 export default class PointsModel extends Observable{
   #pointsApiService;
-  #dataPoints = getRandomPointsMock();
-  #orderedData = this.getOrganizationDataPoints(this.#dataPoints);
+  // #dataPoints = getRandomPointsMock();
+  #dataPoints = [];
+  #destinations = [];
+  #offers = [];
+  #orderedData = [];
 
   constructor({pointsApiService}) {
     super();
     this.#pointsApiService = pointsApiService;
-    this.#pointsApiService.points.then((points) => {
-      console.log(points.map(this.#adaptToClient))
-    })
   }
 
-  getOrganizationDataPoints(_dataPoints) {
+  getOrganizationDataPoints(dataPoints) {
     const orderedData = [];
-    _dataPoints.forEach((point) => {
+    dataPoints.forEach((point) => {
       const organizedPoint = {
-        'id' : point.id,
-        'dateFrom': point.dateFrom,
-        'dateTo': point.dateTo,
-        'basePrice': point.basePrice,
-        'destination': getDestination(point.destination),
-        'isFavorite': point.isFavorite,
-        'offers': point.offers,
-        'allOffers': getOffers(),
-        'type': point.type
+        ...point,
+        'allOffers': this.offers,
+        'destination': this.destinations.find((e) => e.id === point.destination)
       };
 
       orderedData.push(organizedPoint);
@@ -37,8 +32,40 @@ export default class PointsModel extends Observable{
     return orderedData;
   }
 
+  async init() {
+    try {
+      const points = await this.#pointsApiService.points;
+      this.#dataPoints = points.map(this.#adaptToClient);
+
+      this.#destinations = await this.#pointsApiService.destinations;
+      this.#offers = await this.#pointsApiService.offers;
+
+      this.#orderedData = this.getOrganizationDataPoints(this.#dataPoints);
+      console.log(this.#orderedData)
+
+      // console.log('== вывод инициализации модели точки/направления/офферы')
+      // console.log(this.#dataPoints)
+      console.log(this.#destinations)
+      // console.log(this.#offers)
+    } catch (err) {
+      console.log('== случилась ошибка. ее текст ниже')
+      console.log(err)
+      this.#dataPoints = [];
+    }
+
+    this._notify(UpdateType.INIT);
+  }
+
   get points() {
     return this.#orderedData;
+  }
+
+  get destinations() {
+    return this.#destinations;
+  }
+
+  get offers() {
+    return this.#offers;
   }
 
   #adaptToClient(point) {
@@ -57,7 +84,6 @@ export default class PointsModel extends Observable{
 
     return adaptedPoint;
   }
-
 
   updatePoint(updateType, update) {
     const index = this.#orderedData.findIndex((point) => point.id === update.id);
@@ -101,8 +127,5 @@ export default class PointsModel extends Observable{
 
   }
 
-  get offers () {
-    return getOffers();
-  }
 }
 
