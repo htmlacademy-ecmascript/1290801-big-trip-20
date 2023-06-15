@@ -4,8 +4,7 @@ const Method = {
   GET: 'GET',
   POST: 'POST',
   PUT: 'PUT',
-  DELETE: 'DELETE',
-  PATCH: 'PATCH'
+  DELETE: 'DELETE'
 }
 
 export default class PointsApiService extends ApiService {

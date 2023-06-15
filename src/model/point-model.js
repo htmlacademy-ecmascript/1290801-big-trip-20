@@ -1,12 +1,8 @@
 import Observable from '../framework/observable';
-import {getRandomPointsMock} from '../mock/points-mock';
-import {getDestination} from '../mock/destination-mock';
-import {getOffers} from '../mock/offers-mock';
 import {UpdateType} from '../const';
 
 export default class PointsModel extends Observable{
   #pointsApiService;
-  // #dataPoints = getRandomPointsMock();
   #dataPoints = [];
   #destinations = [];
   #offers = [];
