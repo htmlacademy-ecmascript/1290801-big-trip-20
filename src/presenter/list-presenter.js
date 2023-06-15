@@ -2,6 +2,7 @@ import {remove, render} from '../framework/render';
 import SortView from '../view/sort-view';
 import ListView from '../view/list-view';
 import NoPointsView from '../view/no-points-view';
+import LoadingView from '../view/loading-view';
 import NewPointButtonView from '../view/new-point-button-view';
 import PointPresenter from './point-presenter';
 import {SORT_TYPE, FILTER_TYPE, UpdateType, UserAction} from '../const';
@@ -18,12 +19,14 @@ export default class ListPresenter {
   #listComponent = new ListView();
   #sortComponent = null;
   #noPointsComponent = null;
+  #loadingComponent = new LoadingView();
   #newPointButton = null;
 
   #pointsPresenters = new Map;
   #newPointPresenter = null;
   #currentSortType = SORT_TYPE.DAY;
   #filterType = FILTER_TYPE.EVERYTHING;
+  #isLoading = true;
 
   constructor({listContainer, newPointButtonContainer, pointsModel, filterModel}) {
     this.#listContainer = listContainer;
@@ -97,6 +100,7 @@ export default class ListPresenter {
         break;
       case UpdateType.INIT:
         // запускается при инициализации модели
+        this.#isLoading = false;
         this.#clearList();
         this.#updateDestinationsAndOffersHandler();
         this.#renderList();
@@ -127,6 +131,11 @@ export default class ListPresenter {
   };
 
   #renderList() {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     if (this.points.length === 0 && !this.#newPointButton.element.disabled) {
       this.#renderNoPoints();
       return;
@@ -155,6 +164,10 @@ export default class ListPresenter {
     render(this.#noPointsComponent, this.#listContainer);
   }
 
+  #renderLoading() {
+    render(this.#loadingComponent, this.#listContainer);
+  }
+
   #renderPoints() {
     this.points.forEach((point) => this.#renderPoint(point, this.allDestinations));
   }
@@ -175,6 +188,7 @@ export default class ListPresenter {
     this.#pointsPresenters.clear();
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
     remove(this.#noPointsComponent);
 
     if (resetSortType) {
