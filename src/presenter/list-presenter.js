@@ -58,8 +58,6 @@ export default class ListPresenter {
   }
 
   init() {
-    this.#newPointButton = new NewPointButtonView({onClick: this.#newPointButtonClickHandler});
-    render(this.#newPointButton, this.#newPointButtonContainer, 'beforeend');
     this.#renderList();
   }
 
@@ -101,6 +99,8 @@ export default class ListPresenter {
       case UpdateType.INIT:
         // запускается при инициализации модели
         this.#isLoading = false;
+        this.#newPointButton = new NewPointButtonView({onClick: this.#newPointButtonClickHandler});
+        render(this.#newPointButton, this.#newPointButtonContainer, 'beforeend');
         this.#clearList();
         this.#updateDestinationsAndOffersHandler();
         this.#renderList();
