@@ -5,7 +5,7 @@ import NoPointsView from '../view/no-points-view';
 import LoadingView from '../view/loading-view';
 import NewPointButtonView from '../view/new-point-button-view';
 import PointPresenter from './point-presenter';
-import {SORT_TYPE, FILTER_TYPE, UpdateType, UserAction} from '../const';
+import {SortType, FilterType, UpdateType, UserAction} from '../const';
 import {sortPointsEvent, sortPointsOffers, sortPointsPrice, sortPointsTime} from '../utils/sort';
 import {filter} from '../utils/filter';
 import NewPointPresenter from './new-point-presenter';
@@ -24,8 +24,8 @@ export default class ListPresenter {
 
   #pointsPresenters = new Map;
   #newPointPresenter = null;
-  #currentSortType = SORT_TYPE.DAY;
-  #filterType = FILTER_TYPE.EVERYTHING;
+  #currentSortType = SortType.DAY;
+  #filterType = FilterType.EVERYTHING;
   #isLoading = true;
 
   constructor({listContainer, newPointButtonContainer, pointsModel, filterModel}) {
@@ -44,13 +44,13 @@ export default class ListPresenter {
     const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
-      case SORT_TYPE.EVENT:
+      case SortType.EVENT:
         return filteredPoints.sort(sortPointsEvent);
-      case SORT_TYPE.TIME:
+      case SortType.TIME:
         return filteredPoints.sort(sortPointsTime);
-      case SORT_TYPE.PRICE:
+      case SortType.PRICE:
         return filteredPoints.sort(sortPointsPrice);
-      case SORT_TYPE.OFFERS:
+      case SortType.OFFERS:
         return filteredPoints.sort(sortPointsOffers);
     }
 
@@ -192,20 +192,20 @@ export default class ListPresenter {
     remove(this.#noPointsComponent);
 
     if (resetSortType) {
-      this.#currentSortType = SORT_TYPE.DAY;
+      this.#currentSortType = SortType.DAY;
     }
   }
 
 
   #newPointButtonClickHandler = () => {
     this.#newPointButton.element.disabled = true;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FILTER_TYPE.EVERYTHING);
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
   };
 
   #newPointDestroyHandler = () => {
     this.#newPointButton.element.disabled = false;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FILTER_TYPE.EVERYTHING);
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
   };
 
 

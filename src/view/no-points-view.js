@@ -1,12 +1,12 @@
 import AbstractView from '../framework/view/abstract-view';
-import {FILTER_TYPE} from '../const';
+import {FilterType} from '../const';
 
 const NoPointsTextType = {
-  [FILTER_TYPE.EVERYTHING]: 'Click New Event to create your first point',
-  [FILTER_TYPE.FUTURE]: 'There are no future events now',
-  [FILTER_TYPE.PRESENT]: 'There are no present events now',
-  [FILTER_TYPE.PAST]: 'There are no past events now',
-  [FILTER_TYPE.FAVORITE]: 'There are no favorite events now. Click the star on your point to add it to your favourites',
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.FUTURE]: 'There are no future events now',
+  [FilterType.PRESENT]: 'There are no present events now',
+  [FilterType.PAST]: 'There are no past events now',
+  [FilterType.FAVORITE]: 'There are no favorite events now. Click the star on your point to add it to your favourites',
 };
 
 function createNoPointsView(filterType) {

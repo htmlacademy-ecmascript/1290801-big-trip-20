@@ -1,7 +1,8 @@
+//я не очень понимаю, это все таки массив или перечисление
+//пока буду считать это константой
 const POINTS_TYPE = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
-const MOCK_POINT_COUNT = 1;
 
-const SORT_TYPE = {
+const SortType = {
   DAY: 'day',
   EVENT: 'event',
   TIME: 'time',
@@ -9,7 +10,7 @@ const SORT_TYPE = {
   OFFERS: 'offers'
 };
 
-const FILTER_TYPE = {
+const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
   PRESENT: 'present',
@@ -33,9 +34,8 @@ const UpdateType = {
 
 export {
   POINTS_TYPE,
-  MOCK_POINT_COUNT,
-  FILTER_TYPE,
-  SORT_TYPE,
+  FilterType,
+  SortType,
   UserAction,
   UpdateType
 };

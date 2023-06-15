@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {SORT_TYPE} from '../const';
+import {SortType} from '../const';
 
-const sortData = Object.values(SORT_TYPE);
+const sortData = Object.values(SortType);
 
 
 function createSortItemTemplate(type, currentSortType) {
