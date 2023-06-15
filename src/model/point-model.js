@@ -37,12 +37,10 @@ export default class PointsModel extends Observable{
       this.#offers = await this.#pointsApiService.offers;
 
       this.#orderedData = this.getOrganizationDataPoints(this.#dataPoints);
-      console.log(this.#orderedData)
 
-      // console.log('== вывод инициализации модели точки/направления/офферы')
-      // console.log(this.#dataPoints)
+      console.log(this.#orderedData)
       console.log(this.#destinations)
-      // console.log(this.#offers)
+
     } catch (err) {
       console.log('== случилась ошибка. ее текст ниже')
       console.log(err)
@@ -81,21 +79,28 @@ export default class PointsModel extends Observable{
     return adaptedPoint;
   }
 
-  updatePoint(updateType, update) {
+  async updatePoint(updateType, update) {
     const index = this.#orderedData.findIndex((point) => point.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t update nonexistent point');
     }
 
-    this.#orderedData = [
-      ...this.#orderedData.slice(0, index),
-      update,
-      ...this.#orderedData.slice(index + 1)
-    ];
+    try {
+      const response = await this.#pointsApiService.updatePoint(update);
+      const updatedPoint = this.#adaptToClient(response);
 
-    this._notify(updateType, update);
+      this.#orderedData = [
+        ...this.#orderedData.slice(0, index),
+        ...this.getOrganizationDataPoints([updatedPoint]),
+        ...this.#orderedData.slice(index + 1)
+      ];
 
+      this._notify(updateType, update);
+
+    } catch (err) {
+      throw new Error('Can\'t update task');
+    }
   }
 
   addPoint(updateType, update) {
@@ -122,6 +127,5 @@ export default class PointsModel extends Observable{
     this._notify(updateType, update);
 
   }
-
 }
 
