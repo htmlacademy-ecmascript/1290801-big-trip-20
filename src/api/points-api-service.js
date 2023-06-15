@@ -5,7 +5,7 @@ const Method = {
   POST: 'POST',
   PUT: 'PUT',
   DELETE: 'DELETE'
-}
+};
 
 export default class PointsApiService extends ApiService {
 
@@ -39,10 +39,10 @@ export default class PointsApiService extends ApiService {
   #adaptToServer(point) {
     const adaptedPoint = {
       ...point,
-      base_price: point['basePrice'],
-      date_to: point['dateTo'],
-      date_from: point['dateFrom'],
-      is_favorite: point['isFavorite'],
+      'base_price': point['basePrice'],
+      'date_to': point['dateTo'],
+      'date_from': point['dateFrom'],
+      'is_favorite': point['isFavorite'],
       destination: point.destination.id,
     };
 

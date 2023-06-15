@@ -37,13 +37,7 @@ export default class PointsModel extends Observable{
       this.#offers = await this.#pointsApiService.offers;
 
       this.#orderedData = this.getOrganizationDataPoints(this.#dataPoints);
-
-      console.log(this.#orderedData)
-      console.log(this.#destinations)
-
     } catch (err) {
-      console.log('== случилась ошибка. ее текст ниже')
-      console.log(err)
       this.#dataPoints = [];
     }
 

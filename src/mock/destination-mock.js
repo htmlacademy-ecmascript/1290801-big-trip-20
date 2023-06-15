@@ -76,7 +76,6 @@ const destinationMock = [
 ];
 
 function getDestination(id){
-  console.log('d mock')
   if (!id){
     return destinationMock;
   } else {

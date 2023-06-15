@@ -4,7 +4,6 @@ import ListPresenter from './presenter/list-presenter';
 import FilterPresenter from './presenter/filter-presenter';
 import {RenderPosition} from './render.js';
 import PointsModel from './model/point-model';
-import DestinationsModel from './model/destinations-model';
 import FilterModel from './model/filter-model';
 import {getTripInfo} from './mock/trip-info-mock';
 import PointsApiService from './api/points-api-service';
@@ -21,8 +20,6 @@ const pointsModel = new PointsModel({
   pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
 });
 
-// скорее всего destinationsModel перенесу в pointsModel
-// const destinationsModel = new DestinationsModel();
 const filterModel = new FilterModel();
 
 const tripInfo = getTripInfo();
@@ -31,7 +28,6 @@ const listPresenter = new ListPresenter({
   listContainer: siteBodyElement,
   newPointButtonContainer: siteHeaderInfoElement,
   pointsModel,
-  // destinationsModel,
   filterModel
 });
 

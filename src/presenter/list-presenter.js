@@ -209,8 +209,6 @@ export default class ListPresenter {
   };
 
 
-
-
 }
 
 
