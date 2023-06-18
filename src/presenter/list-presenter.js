@@ -7,7 +7,7 @@ import LoadingView from '../view/loading-view';
 import NewPointButtonView from '../view/new-point-button-view';
 import PointPresenter from './point-presenter';
 import {SortType, FilterType, UpdateType, UserAction} from '../const';
-import {sortPointsEvent, sortPointsOffers, sortPointsPrice, sortPointsTime} from '../utils/sort';
+import {sortPointsDay, sortPointsEvent, sortPointsOffers, sortPointsPrice, sortPointsTime} from '../utils/sort';
 import {filter} from '../utils/filter';
 import NewPointPresenter from './new-point-presenter';
 
@@ -54,6 +54,8 @@ export default class ListPresenter {
     const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
+      case SortType.DAY:
+        return filteredPoints.sort(sortPointsDay);
       case SortType.EVENT:
         return filteredPoints.sort(sortPointsEvent);
       case SortType.TIME:

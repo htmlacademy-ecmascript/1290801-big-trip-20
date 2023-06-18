@@ -1,4 +1,5 @@
 import {dateDuration} from './time';
+import dayjs from 'dayjs';
 
 function sortPointsEvent(pointA, pointB) {
   if (pointA.type === pointB.type) {
@@ -21,10 +22,15 @@ function sortPointsOffers(pointA, pointB) {
   return pointB.offers.length - pointA.offers.length;
 }
 
+function sortPointsDay(eventA, eventB) {
+  return (+dayjs(eventA.dateFrom)-+dayjs(eventB.dateFrom))
+}
+
 
 export {
   sortPointsEvent,
   sortPointsTime,
   sortPointsPrice,
-  sortPointsOffers
+  sortPointsOffers,
+  sortPointsDay
 };
