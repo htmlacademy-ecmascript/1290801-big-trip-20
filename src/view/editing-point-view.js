@@ -194,10 +194,10 @@ function createEditingPointView(point, allDestinations) {
                     >
                   </div>
 
-                  <button class="event__save-btn  btn  btn--blue" type="submit">
+                  <button class="event__save-btn  btn  btn--blue" type="submit " ${isDisabled ? ' disabled' : ''}>
                     ${isSaving? 'Saving...' : 'Save'}
                   </button>
-                  <button class="event__reset-btn" type="reset">
+                  <button class="event__reset-btn" type="reset" ${isDisabled ? ' disabled' : ''}>
                     ${isNewPoint ? 'Cancel' : isDeleting? 'Deleting...' :'Delete'}
                   </button>
                   ${isNewPoint ? '' : '<button class="event__rollup-btn" type="button">'}
