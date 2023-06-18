@@ -1,4 +1,5 @@
 import {remove, render} from '../framework/render';
+import UiBlocker from '../framework/ui-blocker/ui-blocker';
 import SortView from '../view/sort-view';
 import ListView from '../view/list-view';
 import NoPointsView from '../view/no-points-view';
@@ -9,6 +10,11 @@ import {SortType, FilterType, UpdateType, UserAction} from '../const';
 import {sortPointsEvent, sortPointsOffers, sortPointsPrice, sortPointsTime} from '../utils/sort';
 import {filter} from '../utils/filter';
 import NewPointPresenter from './new-point-presenter';
+
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000
+}
 
 export default class ListPresenter {
   #listContainer = null;
@@ -27,6 +33,10 @@ export default class ListPresenter {
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
   #isLoading = true;
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT
+  })
 
   constructor({listContainer, newPointButtonContainer, pointsModel, filterModel}) {
     this.#listContainer = listContainer;
@@ -67,6 +77,8 @@ export default class ListPresenter {
   };
 
   #handleViewAction = async (actionType, updateType, update) => {
+    this.#uiBlocker.block();
+
     switch (actionType) {
       case UserAction.UPDATE_POINT:
         this.#pointsPresenters.get(update.id).setSaving();
@@ -93,6 +105,8 @@ export default class ListPresenter {
         }
         break;
     }
+
+    this.#uiBlocker.unblock();
   };
 
   #handleModelEvent = (updateType, data) => {
