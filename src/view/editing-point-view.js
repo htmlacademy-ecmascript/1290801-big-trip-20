@@ -195,10 +195,12 @@ function createEditingPointView(point, allDestinations) {
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit " ${isDisabled ? ' disabled' : ''}>
-                    ${isSaving? 'Saving...' : 'Save'}
+                    ${isSaving ? 'Saving...' : 'Save'}
                   </button>
                   <button class="event__reset-btn" type="reset" ${isDisabled ? ' disabled' : ''}>
-                    ${isNewPoint ? 'Cancel' : isDeleting? 'Deleting...' :'Delete'}
+                    ${isNewPoint ? 'Cancel' : ''}
+                    ${!isNewPoint && isDeleting ? 'Deleting...' : ''}
+                    ${!isNewPoint && !isDeleting ? 'Delete' : ''}
                   </button>
                   ${isNewPoint ? '' : '<button class="event__rollup-btn" type="button">'}
                     <span class="visually-hidden">Open event</span>
@@ -320,9 +322,9 @@ export default class EditingPointView extends AbstractStatefulView {
     event.preventDefault();
     //обработчик выбора типа точки
     this.updateElement({
-        ...this._state,
-        type: event.target.value,
-        offers: []
+      ...this._state,
+      type: event.target.value,
+      offers: []
     });
   };
 
@@ -334,8 +336,8 @@ export default class EditingPointView extends AbstractStatefulView {
       return;
     }
     this.updateElement({
-        ...this._state,
-        destination: selectedDestination
+      ...this._state,
+      destination: selectedDestination
     });
   };
 
@@ -343,8 +345,8 @@ export default class EditingPointView extends AbstractStatefulView {
     //обработчик выбора оферов
     const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     this._setState({
-        ...this._state,
-        offers: checkBoxes.map((element) => element.id)
+      ...this._state,
+      offers: checkBoxes.map((element) => element.id)
     });
   };
 
@@ -354,8 +356,8 @@ export default class EditingPointView extends AbstractStatefulView {
     const newPrice = parseInt(event.target.value.replace(/[^0-9]/g, '') || '0', 10);
 
     this._setState({
-        ...this._state,
-        basePrice: newPrice
+      ...this._state,
+      basePrice: newPrice
     });
   };
 
@@ -365,16 +367,16 @@ export default class EditingPointView extends AbstractStatefulView {
 
   #dateFromChangeHandler = ([userDate]) => {
     this._setState({
-        ...this._state,
-        dateFrom: dayjs(userDate).format()
+      ...this._state,
+      dateFrom: dayjs(userDate).format()
     });
     this.#datePickerTo.set('minDate', formatDateToCalendarView(this._state.dateFrom));
   };
 
   #dateToChangeHandler = ([userDate]) => {
     this._setState({
-        ...this._state,
-        dateTo: dayjs(userDate).format()
+      ...this._state,
+      dateTo: dayjs(userDate).format()
     });
     this.#datePickerFrom.set('maxDate', formatDateToCalendarView(this._state.dateTo));
   };
