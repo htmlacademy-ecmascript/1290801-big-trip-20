@@ -24,8 +24,19 @@ const EMPTY_POINT = {
   }
 };
 
-function createEditingPointView({point}, allDestinations) {
-  const {basePrice, dateFrom, dateTo, destination, offers, allOffers, type} = point;
+function createEditingPointView(point, allDestinations) {
+  const {
+    basePrice,
+    dateFrom,
+    dateTo,
+    destination,
+    offers,
+    allOffers,
+    type,
+    isDisabled,
+    isSaving,
+    isDeleting
+  } = point;
   const allOffersThisType = allOffers.find((objWithOffers) => objWithOffers.type === type).offers;
   const isNewPoint = !point.id;
 
@@ -47,7 +58,8 @@ function createEditingPointView({point}, allDestinations) {
             class="event__offer-checkbox  visually-hidden"
             id="${allOffersThisType[i].id}"
             type="checkbox"
-            name="event-offer-comfort" ${isChecked ? 'Checked' : ''}
+            name="event-offer-comfort" ${isChecked ? 'checked' : ''}
+            ${isDisabled ? ' disabled' : ''}
           >
           <label class="event__offer-label" for="${allOffersThisType[i].id}">
             <span class="event__offer-title">${allOffersThisType[i].title}</span>
@@ -73,7 +85,8 @@ function createEditingPointView({point}, allDestinations) {
               type="radio"
               name="event-type"
               value="${checkBoxType}"
-              ${point.type === checkBoxType ? ' checked' : ''}
+              ${type === checkBoxType ? ' checked' : ''}
+              ${isDisabled ? ' disabled' : ''}
             >
             <label
               class="event__type-label  event__type-label--${checkBoxType}"
@@ -116,7 +129,7 @@ function createEditingPointView({point}, allDestinations) {
                         alt="Event type icon"
                       >
                     </label>
-                    <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+                    <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox" ${isDisabled ? ' disabled' : ''}>
 
                     <div class="event__type-list">
                       <fieldset class="event__type-group">
@@ -137,6 +150,7 @@ function createEditingPointView({point}, allDestinations) {
                       name="event-destination"
                       value="${he.encode(destination.name)}"
                       list="destination-list-1"
+                      ${isDisabled ? ' disabled' : ''}
                     >
                     <datalist id="destination-list-1">
                       ${getDestinationsList()}
@@ -151,6 +165,7 @@ function createEditingPointView({point}, allDestinations) {
                       type="text"
                       name="event-start-time"
                       value="${formatDateToCalendarView(dateFrom)}"
+                      ${isDisabled ? ' disabled' : ''}
                     >
                     &mdash;
                     <label class="visually-hidden" for="event-end-time-1">To</label>
@@ -160,6 +175,7 @@ function createEditingPointView({point}, allDestinations) {
                       type="text"
                       name="event-end-time"
                       value="${formatDateToCalendarView(dateTo)}"
+                      ${isDisabled ? ' disabled' : ''}
                     >
                   </div>
 
@@ -174,11 +190,16 @@ function createEditingPointView({point}, allDestinations) {
                       type="text"
                       name="event-price"
                       value="${basePrice}"
+                      ${isDisabled ? ' disabled' : ''}
                     >
                   </div>
 
-                  <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-                  <button class="event__reset-btn" type="reset">${isNewPoint ? 'Cancel' : 'Delete'}</button>
+                  <button class="event__save-btn  btn  btn--blue" type="submit">
+                    ${isSaving? 'Saving...' : 'Save'}
+                  </button>
+                  <button class="event__reset-btn" type="reset">
+                    ${isNewPoint ? 'Cancel' : isDeleting? 'Deleting...' :'Delete'}
+                  </button>
                   ${isNewPoint ? '' : '<button class="event__rollup-btn" type="button">'}
                     <span class="visually-hidden">Open event</span>
                   </button>
@@ -224,8 +245,7 @@ export default class EditingPointView extends AbstractStatefulView {
     }
 
     this.point = {...point};
-    this._setState(EditingPointView.parsePointToState({point}));
-
+    this._setState(EditingPointView.parsePointToState(point));
 
     this._restoreHandlers();
   }
@@ -239,10 +259,10 @@ export default class EditingPointView extends AbstractStatefulView {
     this.#datePickerFrom = flatpickr(dateFromElement,
       {
         dateFormat: 'd/m/y H:i',
-        defaultDate: formatDateToCalendarView(this._state.point.dateFrom),
+        defaultDate: formatDateToCalendarView(this._state.dateFrom),
         onClose: this.#dateFromChangeHandler,
         enableTime: true,
-        maxDate: formatDateToCalendarView(this._state.point.dateTo),
+        maxDate: formatDateToCalendarView(this._state.dateTo),
         locale: {
           firstDayOfWeek: 1,
         },
@@ -251,10 +271,10 @@ export default class EditingPointView extends AbstractStatefulView {
     this.#datePickerTo = flatpickr(dateToElement,
       {
         dateFormat: 'd/m/y H:i',
-        defaultDate: formatDateToCalendarView(this._state.point.dateTo),
+        defaultDate: formatDateToCalendarView(this._state.dateTo),
         onClose: this.#dateToChangeHandler,
         enableTime: true,
-        minDate: formatDateToCalendarView(this._state.point.dateFrom),
+        minDate: formatDateToCalendarView(this._state.dateFrom),
         locale: {
           firstDayOfWeek: 1,
         },
@@ -264,21 +284,21 @@ export default class EditingPointView extends AbstractStatefulView {
 
   #formSubmitHandler = (event) => {
     event.preventDefault();
-    if (JSON.stringify(this._state.point) === JSON.stringify(this.point) && this._state.point.id) {
+    if (JSON.stringify(this._state) === JSON.stringify(this.point) && this._state.id) {
       this.#handleResetForm();
       return;
     }
-    this.#handleFormSubmit(EditingPointView.parseStateToPoint(this._state).point);
+    this.#handleFormSubmit(EditingPointView.parseStateToPoint(this._state));
   };
 
   #formDeleteClickHandler = (event) => {
     event.preventDefault();
-    this.#handleDeleteClick(EditingPointView.parseStateToPoint(this._state).point);
+    this.#handleDeleteClick(EditingPointView.parseStateToPoint(this._state));
   };
 
   reset(point) {
     this.updateElement(
-      EditingPointView.parsePointToState({point})
+      EditingPointView.parsePointToState(point)
     );
   }
 
@@ -300,11 +320,9 @@ export default class EditingPointView extends AbstractStatefulView {
     event.preventDefault();
     //обработчик выбора типа точки
     this.updateElement({
-      point: {
-        ...this._state.point,
+        ...this._state,
         type: event.target.value,
         offers: []
-      }
     });
   };
 
@@ -316,10 +334,8 @@ export default class EditingPointView extends AbstractStatefulView {
       return;
     }
     this.updateElement({
-      point: {
-        ...this._state.point,
+        ...this._state,
         destination: selectedDestination
-      }
     });
   };
 
@@ -327,10 +343,8 @@ export default class EditingPointView extends AbstractStatefulView {
     //обработчик выбора оферов
     const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     this._setState({
-      point: {
-        ...this._state.point,
+        ...this._state,
         offers: checkBoxes.map((element) => element.id)
-      }
     });
   };
 
@@ -340,10 +354,8 @@ export default class EditingPointView extends AbstractStatefulView {
     const newPrice = parseInt(event.target.value.replace(/[^0-9]/g, '') || '0', 10);
 
     this._setState({
-      point: {
-        ...this._state.point,
+        ...this._state,
         basePrice: newPrice
-      }
     });
   };
 
@@ -353,22 +365,18 @@ export default class EditingPointView extends AbstractStatefulView {
 
   #dateFromChangeHandler = ([userDate]) => {
     this._setState({
-      point: {
-        ...this._state.point,
+        ...this._state,
         dateFrom: dayjs(userDate).format()
-      }
     });
-    this.#datePickerTo.set('minDate', formatDateToCalendarView(this._state.point.dateFrom));
+    this.#datePickerTo.set('minDate', formatDateToCalendarView(this._state.dateFrom));
   };
 
   #dateToChangeHandler = ([userDate]) => {
     this._setState({
-      point: {
-        ...this._state.point,
+        ...this._state,
         dateTo: dayjs(userDate).format()
-      }
     });
-    this.#datePickerFrom.set('maxDate', formatDateToCalendarView(this._state.point.dateTo));
+    this.#datePickerFrom.set('maxDate', formatDateToCalendarView(this._state.dateTo));
   };
 
   _restoreHandlers = () => {
@@ -395,12 +403,25 @@ export default class EditingPointView extends AbstractStatefulView {
   };
 
   static parsePointToState(point) {
-    return {...point};
+
+    const state = {
+      ...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
+    };
+
+    return state;
   }
 
   static parseStateToPoint(state) {
-    return {...state};
+    const point = {...state};
 
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
+    return point;
   }
 
 }

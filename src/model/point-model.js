@@ -101,8 +101,6 @@ export default class PointsModel extends Observable{
     try {
       const response = await this.#pointsApiService.addPoint(update);
       const newPoint = this.#adaptToClient(response);
-      console.log(this.#orderedData[0]);
-      console.log(newPoint);
       this.#orderedData = [...this.getOrganizationDataPoints([newPoint]), ...this.#orderedData];
       this._notify(updateType, newPoint);
     } catch (err) {
