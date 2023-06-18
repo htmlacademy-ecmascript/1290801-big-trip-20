@@ -23,7 +23,7 @@ function sortPointsOffers(pointA, pointB) {
 }
 
 function sortPointsDay(eventA, eventB) {
-  return (+dayjs(eventA.dateFrom)-+dayjs(eventB.dateFrom))
+  return (+dayjs(eventA.dateFrom) - +dayjs(eventB.dateFrom));
 }
 
 

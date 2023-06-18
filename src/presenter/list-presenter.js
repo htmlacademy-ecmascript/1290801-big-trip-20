@@ -14,7 +14,7 @@ import NewPointPresenter from './new-point-presenter';
 const TimeLimit = {
   LOWER_LIMIT: 350,
   UPPER_LIMIT: 1000
-}
+};
 
 export default class ListPresenter {
   #listContainer = null;
@@ -36,7 +36,7 @@ export default class ListPresenter {
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
     upperLimit: TimeLimit.UPPER_LIMIT
-  })
+  });
 
   constructor({listContainer, newPointButtonContainer, pointsModel, filterModel}) {
     this.#listContainer = listContainer;
@@ -133,7 +133,7 @@ export default class ListPresenter {
         this.#isLoading = false;
         this.#newPointButton = new NewPointButtonView({onClick: this.#newPointButtonClickHandler});
         render(this.#newPointButton, this.#newPointButtonContainer, 'beforeend');
-        remove(this.#loadingComponent)
+        remove(this.#loadingComponent);
         this.#updateDestinationsAndOffersHandler();
         this.#renderList();
     }
