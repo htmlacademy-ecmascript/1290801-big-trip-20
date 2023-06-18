@@ -72,8 +72,8 @@ export default class ListPresenter {
   }
 
   #handleModeChange = () => {
+    this.#newPointPresenter.destroy();
     this.#pointsPresenters.forEach((presenter) => presenter.resetView());
-    //Может быть тут стоит сворачивать форму создания новой точки?
   };
 
   #handleViewAction = async (actionType, updateType, update) => {
@@ -131,7 +131,7 @@ export default class ListPresenter {
         this.#isLoading = false;
         this.#newPointButton = new NewPointButtonView({onClick: this.#newPointButtonClickHandler});
         render(this.#newPointButton, this.#newPointButtonContainer, 'beforeend');
-        this.#clearList();
+        remove(this.#loadingComponent)
         this.#updateDestinationsAndOffersHandler();
         this.#renderList();
     }
@@ -214,6 +214,7 @@ export default class ListPresenter {
   }
 
   #clearList({resetSortType = false} = {}) {
+    this.#newPointPresenter.destroy();
     this.#pointsPresenters.forEach((presenter) => presenter.destroy());
     this.#pointsPresenters.clear();
 
@@ -228,14 +229,15 @@ export default class ListPresenter {
 
 
   #newPointButtonClickHandler = () => {
-    this.#newPointButton.element.disabled = true;
+    this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
+    this.#newPointButton.element.disabled = true;
   };
 
   #newPointDestroyHandler = () => {
     this.#newPointButton.element.disabled = false;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+
   };
 
 
