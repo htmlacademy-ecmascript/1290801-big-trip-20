@@ -397,7 +397,7 @@ export default class EditingPointView extends AbstractStatefulView {
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationInputChange);
     //кнопки offers
     this.element.querySelector('.event__available-offers').addEventListener('click', this.#offerClickHandler);
-    //price input
+    //поле ввода цены
     this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputChange);
     //добавление календарей
     this.#setDatePicker();
