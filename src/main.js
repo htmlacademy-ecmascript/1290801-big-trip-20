@@ -22,7 +22,7 @@ const pointsModel = new PointsModel({
 
 const filterModel = new FilterModel();
 
-const tripInfo = getTripInfo();
+// const tripInfo = getTripInfo();
 
 const listPresenter = new ListPresenter({
   listContainer: siteBodyElement,
@@ -37,7 +37,7 @@ const filterPresenter = new FilterPresenter({
   pointsModel
 });
 
-render(new TripInfoView(tripInfo), siteHeaderInfoElement, RenderPosition.AFTERBEGIN);
+// render(new TripInfoView(tripInfo), siteHeaderInfoElement, RenderPosition.AFTERBEGIN);
 filterPresenter.init();
 
 listPresenter.init();

@@ -1,18 +1,19 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
 function createTripInfoView(tripInfo) {
+  console.log(tripInfo)
 
-  const {month, dayStart, dayEnd, cities, cost} = tripInfo;
+  const {dates, cities, price} = tripInfo;
 
   return `<section class="trip-main__trip-info  trip-info">
             <div class="trip-info__main">
               <h1 class="trip-info__title">${cities}</h1>
 
-              <p class="trip-info__dates">${month} ${dayStart}&nbsp;&mdash;&nbsp;${dayEnd}</p>
+              <p class="trip-info__dates">${dates}</p>
             </div>
 
             <p class="trip-info__cost">
-              Total: &euro;&nbsp;<span class="trip-info__cost-value">${cost}</span>
+              Total: &euro;&nbsp;<span class="trip-info__cost-value">${price}</span>
             </p>
           </section>`;
 }

@@ -10,6 +10,8 @@ import {SortType, FilterType, UpdateType, UserAction} from '../const';
 import {sortPointsDay, sortPointsEvent, sortPointsOffers, sortPointsPrice, sortPointsTime} from '../utils/sort';
 import {filter} from '../utils/filter';
 import NewPointPresenter from './new-point-presenter';
+import TripInfoView from '../view/trip-info-view';
+import {getTripInfo} from '../mock/trip-info-mock';
 
 const TimeLimit = {
   LOWER_LIMIT: 350,
@@ -26,6 +28,7 @@ export default class ListPresenter {
   #sortComponent = null;
   #noPointsComponent = null;
   #loadingComponent = new LoadingView();
+  #tripInfoComponent = null;
   #newPointButton = null;
 
   #pointsPresenters = new Map;
@@ -173,9 +176,13 @@ export default class ListPresenter {
       return;
     }
 
+    if (this.#tripInfoComponent) {
+      remove(this.#tripInfoComponent);
+    }
+
     this.#renderSort();
     render(this.#listComponent, this.#listContainer, 'beforeend');
-
+    this.#renderTripInfo();
     this.#renderPoints();
   }
 
@@ -198,6 +205,11 @@ export default class ListPresenter {
 
   #renderLoading() {
     render(this.#loadingComponent, this.#listContainer);
+  }
+
+  #renderTripInfo() {
+    this.#tripInfoComponent = new TripInfoView(this.#pointsModel.getTripInfoData(this.#pointsModel.points, this.#pointsModel.offers));
+    render(this.#tripInfoComponent, this.#newPointButtonContainer, 'afterbegin')
   }
 
   #renderPoints() {
