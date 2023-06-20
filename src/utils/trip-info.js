@@ -39,22 +39,8 @@ function organizeTripInfo(points, offers) {
   });
   tripInfo.price = price;
 
-  // это нужна пока есть баг с добавлением точек
-  // const tripInfo = {
-  //   dates : '',
-  //   cities : '',
-  //   price: ''
-  // }
-
   return tripInfo;
 }
-
-
-// 0 пустота
-// 1 город-1
-// 2 город-1 - город-2
-// 3 город-1 - город-2 - город-3
-// 4+ город-1 - ... - город-N
 
 
 export {

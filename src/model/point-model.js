@@ -42,17 +42,6 @@ export default class PointsModel extends Observable{
       this.#offers = await this.#pointsApiService.offers;
 
       this.#orderedData = this.getOrganizationDataPoints(this.#dataPoints);
-      // const pointR = {
-      //   "id": "",
-      //   "base_price": 1100,
-      //   "date_from": "2023-06-19T21:08:10.961Z",
-      //   "date_to": "2023-06-19T21:08:10.961Z",
-      //   "destination": "bed9968c-f830-43b2-a7e3-5379ebc16c05",
-      //   "is_favorite": false,
-      //   "offers": [],
-      //   "type": "taxi"
-      // }
-      this.#pointsApiService.addPoint(pointR)
     } catch (err) {
       this.#dataPoints = [];
     }

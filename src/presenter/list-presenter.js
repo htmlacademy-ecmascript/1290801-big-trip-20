@@ -170,25 +170,28 @@ export default class ListPresenter {
       return;
     }
 
+    if (this.#tripInfoComponent) {
+      remove(this.#tripInfoComponent);
+    }
+    this.#renderTripInfo();
+
+    this.#renderSort();
+    render(this.#listComponent, this.#listContainer, 'beforeend');
+
+
     if (this.points.length === 0 && !this.#newPointButton.element.disabled) {
       this.#renderNoPoints();
       return;
     }
 
-    if (this.#tripInfoComponent) {
-      remove(this.#tripInfoComponent);
-    }
-
-    this.#renderSort();
-    render(this.#listComponent, this.#listContainer, 'beforeend');
-    this.#renderTripInfo();
     this.#renderPoints();
   }
 
   #renderSort() {
     this.#sortComponent = new SortView({
       currentSortType: this.#currentSortType,
-      onSortTypeChange: this.#handleSortTypeChange
+      onSortTypeChange: this.#handleSortTypeChange,
+      isDisabled: !this.points.length
     });
 
     render(this.#sortComponent, this.#listContainer, 'afterbegin');
@@ -243,14 +246,14 @@ export default class ListPresenter {
 
   #newPointButtonClickHandler = () => {
     this.#currentSortType = SortType.DAY;
+    this.#newPointButton.element.disabled = true;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
-    this.#newPointButton.element.disabled = true;
+
   };
 
   #newPointDestroyHandler = () => {
     this.#newPointButton.element.disabled = false;
-
   };
 
 

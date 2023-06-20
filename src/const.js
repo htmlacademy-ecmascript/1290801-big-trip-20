@@ -1,5 +1,5 @@
 //я не очень понимаю, это все таки массив или перечисление
-//пока буду считать это константой
+//буду считать это константой
 const POINTS_TYPE = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
 const SortType = {
