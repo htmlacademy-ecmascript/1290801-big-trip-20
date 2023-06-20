@@ -1,11 +1,7 @@
-import {render} from './framework/render.js';
-import TripInfoView from './view/trip-info-view';
 import ListPresenter from './presenter/list-presenter';
 import FilterPresenter from './presenter/filter-presenter';
-import {RenderPosition} from './render.js';
 import PointsModel from './model/point-model';
 import FilterModel from './model/filter-model';
-import {getTripInfo} from './mock/trip-info-mock';
 import PointsApiService from './api/points-api-service';
 
 const AUTHORIZATION = 'Basic Alexeya6e8cc7be8dd41d3b5bcff03f1877a95';

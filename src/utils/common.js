@@ -1,9 +1,3 @@
-
-/** возвращает случайный элемент массива*/
-function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
-
 /** возвращает случайное число от min (включительно) до(не включительно) max */
 function getRandomInt(max, min = 0) {
   min = Math.ceil(min);
@@ -12,6 +6,5 @@ function getRandomInt(max, min = 0) {
 }
 
 export {
-  getRandomArrayElement,
   getRandomInt,
 };

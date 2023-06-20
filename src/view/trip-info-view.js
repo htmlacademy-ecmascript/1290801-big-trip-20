@@ -1,7 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
 function createTripInfoView(tripInfo) {
-  console.log(tripInfo)
 
   const {dates, cities, price} = tripInfo;
 

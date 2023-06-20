@@ -11,7 +11,6 @@ import {sortPointsDay, sortPointsEvent, sortPointsOffers, sortPointsPrice, sortP
 import {filter} from '../utils/filter';
 import NewPointPresenter from './new-point-presenter';
 import TripInfoView from '../view/trip-info-view';
-import {getTripInfo} from '../mock/trip-info-mock';
 
 const TimeLimit = {
   LOWER_LIMIT: 350,
@@ -209,7 +208,7 @@ export default class ListPresenter {
 
   #renderTripInfo() {
     this.#tripInfoComponent = new TripInfoView(this.#pointsModel.getTripInfoData(this.#pointsModel.points, this.#pointsModel.offers));
-    render(this.#tripInfoComponent, this.#newPointButtonContainer, 'afterbegin')
+    render(this.#tripInfoComponent, this.#newPointButtonContainer, 'afterbegin');
   }
 
   #renderPoints() {

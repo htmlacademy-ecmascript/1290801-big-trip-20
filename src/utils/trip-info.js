@@ -9,18 +9,18 @@ function organizeTripInfo(points, offers) {
 
   if (allPoints.length > 1) {
     const firstPoint = allPoints[0];
-    const lastPoint = allPoints[allPoints.length-1];
+    const lastPoint = allPoints[allPoints.length - 1];
 
     tripInfo.dates = `${dayjs(firstPoint.dateFrom).format('MMM D')} — ${dayjs(lastPoint.dateFrom).format('D MMM')}`;
     switch (allPoints.length) {
       case 2:
-        tripInfo.cities = `${firstPoint.destination.name} — ${lastPoint.destination.name}`
+        tripInfo.cities = `${firstPoint.destination.name} — ${lastPoint.destination.name}`;
         break;
       case 3:
-        tripInfo.cities = `${firstPoint.destination.name} — ${allPoints[1].destination.name} — ${lastPoint.destination.name}`
+        tripInfo.cities = `${firstPoint.destination.name} — ${allPoints[1].destination.name} — ${lastPoint.destination.name}`;
         break;
       default:
-        tripInfo.cities = `${firstPoint.destination.name} — ... — ${lastPoint.destination.name}`
+        tripInfo.cities = `${firstPoint.destination.name} — ... — ${lastPoint.destination.name}`;
     }
 
   } else {
@@ -31,12 +31,12 @@ function organizeTripInfo(points, offers) {
   let price = 0;
   allPoints.forEach((point) => {
     price += point.basePrice;
-    const allOffersThisType = offers.find((objWithOffers) => objWithOffers.type === point.type).offers
+    const allOffersThisType = offers.find((objWithOffers) => objWithOffers.type === point.type).offers;
     for (let i = 0; i < point.offers.length; i++){
-        const checkedOffer = allOffersThisType.find((e) => e.id === point.offers[i]);
-        price += checkedOffer.price;
-      }
-  })
+      const checkedOffer = allOffersThisType.find((e) => e.id === point.offers[i]);
+      price += checkedOffer.price;
+    }
+  });
   tripInfo.price = price;
 
   // это нужна пока есть баг с добавлением точек
@@ -57,11 +57,6 @@ function organizeTripInfo(points, offers) {
 // 4+ город-1 - ... - город-N
 
 
-
-
-
-
-
 export {
   organizeTripInfo,
-}
+};

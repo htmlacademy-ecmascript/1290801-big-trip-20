@@ -30,7 +30,7 @@ export default class PointsModel extends Observable{
   }
 
   getTripInfoData(points, offers) {
-    return organizeTripInfo(points,offers)
+    return organizeTripInfo(points,offers);
   }
 
   async init() {
@@ -52,7 +52,7 @@ export default class PointsModel extends Observable{
       //   "offers": [],
       //   "type": "taxi"
       // }
-      // this.#pointsApiService.addPoint(pointR)
+      this.#pointsApiService.addPoint(pointR)
     } catch (err) {
       this.#dataPoints = [];
     }
