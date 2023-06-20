@@ -10,6 +10,7 @@ import {SortType, FilterType, UpdateType, UserAction} from '../const';
 import {sortPointsDay, sortPointsEvent, sortPointsOffers, sortPointsPrice, sortPointsTime} from '../utils/sort';
 import {filter} from '../utils/filter';
 import NewPointPresenter from './new-point-presenter';
+import TripInfoView from '../view/trip-info-view';
 
 const TimeLimit = {
   LOWER_LIMIT: 350,
@@ -26,6 +27,7 @@ export default class ListPresenter {
   #sortComponent = null;
   #noPointsComponent = null;
   #loadingComponent = new LoadingView();
+  #tripInfoComponent = null;
   #newPointButton = null;
 
   #pointsPresenters = new Map;
@@ -168,13 +170,19 @@ export default class ListPresenter {
       return;
     }
 
+    if (this.#tripInfoComponent) {
+      remove(this.#tripInfoComponent);
+    }
+    this.#renderTripInfo();
+
+    this.#renderSort();
+    render(this.#listComponent, this.#listContainer, 'beforeend');
+
+
     if (this.points.length === 0 && !this.#newPointButton.element.disabled) {
       this.#renderNoPoints();
       return;
     }
-
-    this.#renderSort();
-    render(this.#listComponent, this.#listContainer, 'beforeend');
 
     this.#renderPoints();
   }
@@ -182,7 +190,8 @@ export default class ListPresenter {
   #renderSort() {
     this.#sortComponent = new SortView({
       currentSortType: this.#currentSortType,
-      onSortTypeChange: this.#handleSortTypeChange
+      onSortTypeChange: this.#handleSortTypeChange,
+      isDisabled: !this.points.length
     });
 
     render(this.#sortComponent, this.#listContainer, 'afterbegin');
@@ -198,6 +207,11 @@ export default class ListPresenter {
 
   #renderLoading() {
     render(this.#loadingComponent, this.#listContainer);
+  }
+
+  #renderTripInfo() {
+    this.#tripInfoComponent = new TripInfoView(this.#pointsModel.getTripInfoData(this.#pointsModel.points, this.#pointsModel.offers));
+    render(this.#tripInfoComponent, this.#newPointButtonContainer, 'afterbegin');
   }
 
   #renderPoints() {
@@ -232,14 +246,14 @@ export default class ListPresenter {
 
   #newPointButtonClickHandler = () => {
     this.#currentSortType = SortType.DAY;
+    this.#newPointButton.element.disabled = true;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
-    this.#newPointButton.element.disabled = true;
+
   };
 
   #newPointDestroyHandler = () => {
     this.#newPointButton.element.disabled = false;
-
   };
 
 

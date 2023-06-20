@@ -406,14 +406,12 @@ export default class EditingPointView extends AbstractStatefulView {
 
   static parsePointToState(point) {
 
-    const state = {
+    return {
       ...point,
       isDisabled: false,
       isSaving: false,
       isDeleting: false,
     };
-
-    return state;
   }
 
   static parseStateToPoint(state) {

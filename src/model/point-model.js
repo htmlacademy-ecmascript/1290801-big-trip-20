@@ -1,5 +1,6 @@
 import Observable from '../framework/observable';
 import {UpdateType} from '../const';
+import {organizeTripInfo} from '../utils/trip-info';
 
 export default class PointsModel extends Observable{
   #pointsApiService;
@@ -26,6 +27,10 @@ export default class PointsModel extends Observable{
 
     });
     return orderedData;
+  }
+
+  getTripInfoData(points, offers) {
+    return organizeTripInfo(points,offers);
   }
 
   async init() {
