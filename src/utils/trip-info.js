@@ -40,10 +40,10 @@ function organizeTripInfo(points, offers) {
   allPoints.forEach((point) => {
     price += point.basePrice;
     const allOffersThisType = offers.find((objWithOffers) => objWithOffers.type === point.type).offers;
-    for (let i = 0; i < point.offers.length; i++){
-      const checkedOffer = allOffersThisType.find((e) => e.id === point.offers[i]);
+    point.offers.forEach((pointOffer) =>{
+      const checkedOffer = allOffersThisType.find((offer) => offer.id === pointOffer);
       price += checkedOffer.price;
-    }
+    })
   });
   tripInfo.price = price;
 

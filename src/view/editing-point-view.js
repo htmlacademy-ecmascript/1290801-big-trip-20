@@ -43,9 +43,9 @@ function createEditingPointView(point, allDestinations) {
 
   function getDestinationsList() {
     let destinationsList = '';
-    for (let i = 0; i < allDestinations.length; i++) {
-      destinationsList += `<option value="${allDestinations[i].name}"></option>`;
-    }
+    allDestinations.forEach((destination) => {
+      destinationsList += `<option value="${destination.name}"></option>`;
+    })
     return destinationsList;
   }
 
@@ -58,25 +58,25 @@ function createEditingPointView(point, allDestinations) {
     let offersList = `<section class="event__section  event__section--offers">
                         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
                         <div class="event__available-offers">`;
-    for (let i = 0; i < allOffersThisType.length; i++) {
-      const isChecked = !!offers.find((offer) => offer === allOffersThisType[i].id);
+    allOffersThisType.forEach(offer => {
+      const isChecked = !!offers.find((pointOffer) => pointOffer === offer.id);
       offersList += `
         <div class="event__offer-selector">
           <input
             class="event__offer-checkbox  visually-hidden"
-            id="${allOffersThisType[i].id}"
+            id="${offer.id}"
             type="checkbox"
             name="event-offer-comfort" ${isChecked ? 'checked' : ''}
             ${isDisabled ? ' disabled' : ''}
           >
-          <label class="event__offer-label" for="${allOffersThisType[i].id}">
-            <span class="event__offer-title">${allOffersThisType[i].title}</span>
+          <label class="event__offer-label" for="${offer.id}">
+            <span class="event__offer-title">${offer.title}</span>
             &plus;&euro;&nbsp;
-            <span class="event__offer-price">${allOffersThisType[i].price}</span>
+            <span class="event__offer-price">${offer.price}</span>
           </label>
         </div>
       `;
-    }
+    });
     offersList += `</div></section>`
 
     return offersList;
@@ -84,8 +84,7 @@ function createEditingPointView(point, allDestinations) {
 
   function getPointsCheckBoxes() {
     let pointsCheckBoxes = '';
-    for (let i = 0; i < POINTS_TYPE.length; i++) {
-      const checkBoxType = POINTS_TYPE[i];
+    POINTS_TYPE.forEach((checkBoxType) => {
       pointsCheckBoxes += `
         <div class="event__type-item">
             <input
@@ -103,7 +102,8 @@ function createEditingPointView(point, allDestinations) {
             >${formatToUpperCaseFirstLetter(checkBoxType)}
             </label>
         </div>`;
-    }
+    })
+    console.log(pointsCheckBoxes)
     return pointsCheckBoxes;
   }
 
