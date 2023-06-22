@@ -18,12 +18,14 @@ function humanizeDate(date, itsTime) {
 const timeDifference = (dateFrom, dateTo) => {
   const timeDiff = dayjs.duration(dayjs(dateTo).diff(dayjs(dateFrom))).$ms;
   let timeGap;
+  let days;
+  let formattedMinutesAndHours;
   switch (true) {
     //больше дня
     case (timeDiff >= MS_IN_ONE_DAY):
-      const days = Math.floor(timeDiff/MS_IN_ONE_DAY);
-      const formattedMinutesAndHours = dayjs.duration(timeDiff - days*MS_IN_ONE_DAY).format('HH[H] mm[M]')
-      timeGap = `${days}D ${formattedMinutesAndHours}`
+      days = Math.floor(timeDiff / MS_IN_ONE_DAY);
+      formattedMinutesAndHours = dayjs.duration(timeDiff - days * MS_IN_ONE_DAY).format('HH[H] mm[M]');
+      timeGap = `${days}D ${formattedMinutesAndHours}`;
       break;
     //больше часа
     case (timeDiff >= MS_IN_ONE_HOUR):

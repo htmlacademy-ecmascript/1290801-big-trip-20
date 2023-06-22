@@ -28,7 +28,7 @@ export default class ListPresenter {
   #sortComponent = null;
   #noPointsComponent = null;
   #loadingComponent = new LoadingView();
-  #errorComponent = new ErrorView()
+  #errorComponent = new ErrorView();
   #tripInfoComponent = null;
   #newPointButton = null;
 
@@ -137,7 +137,7 @@ export default class ListPresenter {
         this.#isLoading = false;
         remove(this.#loadingComponent);
         if (this.#pointsModel.isError) {
-          this.#renderError()
+          this.#renderError();
           break;
         }
         this.#newPointButton = new NewPointButtonView({onClick: this.#newPointButtonClickHandler});
@@ -216,7 +216,7 @@ export default class ListPresenter {
   }
 
   #renderError() {
-    render(this.#errorComponent, this.#listContainer)
+    render(this.#errorComponent, this.#listContainer);
   }
 
   #renderTripInfo() {
@@ -255,7 +255,7 @@ export default class ListPresenter {
 
 
   #newPointButtonClickHandler = () => {
-    this.#handleModeChange()
+    this.#handleModeChange();
     this.#currentSortType = SortType.DAY;
     this.#newPointButton.element.disabled = true;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
