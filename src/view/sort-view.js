@@ -1,7 +1,8 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {SortType} from '../const';
 
-const sortData = Object.values(SortType);
+const sortTypes = Object.values(SortType);
+console.log(sortTypes)
 
 
 function createSortItemTemplate(type, currentSortType, isDisabled) {
@@ -21,7 +22,7 @@ function createSortItemTemplate(type, currentSortType, isDisabled) {
 }
 
 function createSortTemplate(currentSortType, isDisabled) {
-  const sortItemsTemplate = sortData
+  const sortItemsTemplate = sortTypes
     .map((sortType) => createSortItemTemplate(sortType, currentSortType, isDisabled))
     .join('');
 

@@ -1,11 +1,12 @@
 import dayjs from 'dayjs';
-import {getRandomInt} from './common';
 import duration from 'dayjs/plugin/duration';
 
 dayjs.extend(duration);
 
 const DATE_FORMAT = 'MMM DD';
 const TIME_FORMAT = 'HH:mm';
+const MS_IN_ONE_HOUR = 3600000;
+const MS_IN_ONE_DAY = 86400000;
 
 /** возвращает (строка) дату в человекопонятном виде. Если стоит флаг true вторым аргументом, то возвращает время */
 function humanizeDate(date, itsTime) {
@@ -13,31 +14,31 @@ function humanizeDate(date, itsTime) {
   return date ? dayjs(date).format(format) : '';
 }
 
-/** Возвращает (строка) разницу во времени между двумя датами в формате Y Mth H D M */
-function timeDifference(timeFrom, timeTo) {
-  const diff = dayjs.duration(dayjs(timeTo).diff(dayjs(timeFrom))).$d;
-  return (`${diff.year ? `${diff.year}Y ` : ''}`
-    + `${diff.months ? `${diff.months}Mth ` : ''}`
-    + `${diff.days ? `${diff.days}D ` : ''}`
-    + `${diff.hours ? `${diff.hours}H ` : '0H '}`
-    + `${diff.minutes ? `${diff.minutes}M` : '0M'}`);
-}
-
-/** Возвращает строку со временем UTC. Оно будет случайным и выше текущей даты до недели.
- * Если передать параметром строку с UTC временем,
- * то вернет случайное время со сдвигом от него на расстояние до недели.*/
-function getRandomTime(timeFrom) {
-  const day = getRandomInt(7);
-  const hour = getRandomInt(24);
-  const minute = getRandomInt(60);
-  if (!timeFrom) {
-    return dayjs().add(day, 'day').add(hour, 'hour').add(minute, 'minute').format();
-  } else {
-    return dayjs(timeFrom).add(day, 'day').add(hour, 'hour').add(minute, 'minute').format();
-
+/** Возвращает (строка) разницу во времени между двумя датами в формате H D M */
+const timeDifference = (dateFrom, dateTo) => {
+  const timeDiff = dayjs.duration(dayjs(dateTo).diff(dayjs(dateFrom))).$ms;
+  let timeGap;
+  switch (true) {
+    //больше дня
+    case (timeDiff >= MS_IN_ONE_DAY):
+      const days = Math.floor(timeDiff/MS_IN_ONE_DAY);
+      const formattedMinutesAndHours = dayjs.duration(timeDiff - days*MS_IN_ONE_DAY).format('HH[H] mm[M]')
+      timeGap = `${days}D ${formattedMinutesAndHours}`
+      break;
+    //больше часа
+    case (timeDiff >= MS_IN_ONE_HOUR):
+      timeGap = 'больше часа';
+      timeGap = dayjs.duration(timeDiff).format('HH[H] mm[M]');
+      break;
+    //меньше часа
+    case (timeDiff < MS_IN_ONE_HOUR):
+      timeGap = 'меньше часа';
+      timeGap = dayjs.duration(timeDiff).format('mm[M]');
+      break;
   }
-}
 
+  return timeGap;
+};
 /** обрезает дату до вида, который нужен в html атрибуте dateTime */
 function trimDate(date) {
   return date.slice(0, 16);
@@ -65,17 +66,17 @@ function dateDuration(dateA, dateB) {
 
 /** возвращает true если data в будущем */
 function checkFuture(date) {
-  return dayjs(new Date()).diff(dayjs(date)) < 0;
+  return dayjs().diff(dayjs(date)) < 0;
 }
 
 /** возвращает true если текущий момент находится в промежутке между dateFrom и dateTo*/
 function checkPresent(dateFrom, dateTo) {
-  return dayjs(new Date()).diff(dayjs(dateTo)) < 0 && dayjs(new Date()).diff(dayjs(dateFrom)) > 0;
+  return dayjs().diff(dayjs(dateTo)) < 0 && dayjs().diff(dayjs(dateFrom)) > 0;
 }
 
 /** возвращает true если data в прошлом */
 function checkPast(date) {
-  return dayjs(new Date()).diff(dayjs(date)) > 0;
+  return dayjs().diff(dayjs(date)) > 0;
 }
 
 
@@ -84,7 +85,6 @@ export {
   formatDateToCalendarView,
   formatDateToDatetimeAttr,
   trimDate,
-  getRandomTime,
   timeDifference,
   humanizeDate,
   dateDuration,

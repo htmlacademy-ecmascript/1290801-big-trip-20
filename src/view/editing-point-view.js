@@ -37,6 +37,7 @@ function createEditingPointView(point, allDestinations) {
     isSaving,
     isDeleting
   } = point;
+
   const allOffersThisType = allOffers.find((objWithOffers) => objWithOffers.type === type).offers;
   const isNewPoint = !point.id;
 
@@ -49,7 +50,14 @@ function createEditingPointView(point, allDestinations) {
   }
 
   function getOffersList() {
-    let offersList = '';
+
+    if (allOffersThisType.length === 0){
+      return '';
+    }
+
+    let offersList = `<section class="event__section  event__section--offers">
+                        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+                        <div class="event__available-offers">`;
     for (let i = 0; i < allOffersThisType.length; i++) {
       const isChecked = !!offers.find((offer) => offer === allOffersThisType[i].id);
       offersList += `
@@ -69,6 +77,7 @@ function createEditingPointView(point, allDestinations) {
         </div>
       `;
     }
+    offersList += `</div></section>`
 
     return offersList;
   }
@@ -98,6 +107,17 @@ function createEditingPointView(point, allDestinations) {
     return pointsCheckBoxes;
   }
 
+  function getDestinationInfo() {
+    if (destination.id === '') {
+      return '';
+    }
+    return `<section class="event__section  event__section--destination">
+              <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+              <p class="event__destination-description">${destination.description}</p>
+              ${getImagesFromDestinations()}
+            </section>`;
+
+  }
   function getImagesFromDestinations() {
     if (destination.pictures.length === 0) {
       return '';
@@ -206,20 +226,11 @@ function createEditingPointView(point, allDestinations) {
                     <span class="visually-hidden">Open event</span>
                   </button>
                 </header>
+
                 <section class="event__details">
-                  <section class="event__section  event__section--offers">
-                    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+                  ${getOffersList()}
+                  ${getDestinationInfo()}
 
-                    <div class="event__available-offers">
-                      ${getOffersList()}
-                    </div>
-                  </section>
-
-                  <section class="event__section  event__section--destination">
-                    <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">${destination.description}</p>
-                    ${getImagesFromDestinations()}
-                  </section>
                 </section>
               </form>
             </li>`;
@@ -396,7 +407,7 @@ export default class EditingPointView extends AbstractStatefulView {
     //выбор направления путешествия
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationInputChange);
     //кнопки offers
-    this.element.querySelector('.event__available-offers').addEventListener('click', this.#offerClickHandler);
+    this.element.querySelector('.event__available-offers')?.addEventListener('click', this.#offerClickHandler);
     //поле ввода цены
     this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputChange);
     //добавление календарей

@@ -8,10 +8,16 @@ export default class PointsModel extends Observable{
   #destinations = [];
   #offers = [];
   #orderedData = [];
+  #isError = false;
 
   constructor({pointsApiService}) {
     super();
     this.#pointsApiService = pointsApiService;
+    this.#isError = false;
+  }
+
+  get isError() {
+    return this.#isError;
   }
 
   getOrganizationDataPoints(dataPoints) {
@@ -43,7 +49,7 @@ export default class PointsModel extends Observable{
 
       this.#orderedData = this.getOrganizationDataPoints(this.#dataPoints);
     } catch (err) {
-      this.#dataPoints = [];
+      this.#isError = true;
     }
 
     this._notify(UpdateType.INIT);
