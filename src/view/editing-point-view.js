@@ -43,9 +43,9 @@ function createEditingPointView(point, allDestinations) {
 
   function getDestinationsList() {
     let destinationsList = '';
-    allDestinations.forEach((destination) => {
-      destinationsList += `<option value="${destination.name}"></option>`;
-    })
+    allDestinations.forEach((pointDestination) => {
+      destinationsList += `<option value="${pointDestination.name}"></option>`;
+    });
     return destinationsList;
   }
 
@@ -58,7 +58,7 @@ function createEditingPointView(point, allDestinations) {
     let offersList = `<section class="event__section  event__section--offers">
                         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
                         <div class="event__available-offers">`;
-    allOffersThisType.forEach(offer => {
+    allOffersThisType.forEach((offer) => {
       const isChecked = !!offers.find((pointOffer) => pointOffer === offer.id);
       offersList += `
         <div class="event__offer-selector">
@@ -77,7 +77,7 @@ function createEditingPointView(point, allDestinations) {
         </div>
       `;
     });
-    offersList += `</div></section>`
+    offersList += '</div></section>';
 
     return offersList;
   }
@@ -102,7 +102,7 @@ function createEditingPointView(point, allDestinations) {
             >${formatToUpperCaseFirstLetter(checkBoxType)}
             </label>
         </div>`;
-    })
+    });
     return pointsCheckBoxes;
   }
 

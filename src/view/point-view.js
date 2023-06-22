@@ -7,14 +7,14 @@ function createPointTemplate(point) {
   let offersList = '';
   if (offers.length > 0){
     offersList += '<ul class="event__selected-offers">';
-    offers.forEach(offerId => {
+    offers.forEach((offerId) => {
       const offer = allOffersThisType.find((e) => e.id === offerId);
       offersList += `<li class="event__offer">
                         <span class="event__offer-title">${offer.title}</span>
                         &plus;&euro;&nbsp;
                         <span class="event__offer-price">${offer.price}</span>
                   </li>`;
-    })
+    });
     offersList += '</ul>';
   }
 
