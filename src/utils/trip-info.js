@@ -11,8 +11,6 @@ function organizeTripInfo(points, offers) {
     const firstPoint = allPoints[0];
     const lastPoint = allPoints[allPoints.length - 1];
 
-    console.log(dayjs(lastPoint.dateFrom))
-
     tripInfo.dates = `${dayjs(firstPoint.dateFrom).format('MMM D')} — ${dayjs(lastPoint.dateFrom).format('D MMM')}`;
 
     switch (allPoints.length) {
