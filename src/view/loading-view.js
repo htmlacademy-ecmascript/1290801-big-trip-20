@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view';
 
 function createLoadingView() {
-  return '<p class="trip-events__msg">...Loading</p>';
+  return '<p class="trip-events__msg">Loading...</p>';
 }
 
 export default class LoadingView extends AbstractView{

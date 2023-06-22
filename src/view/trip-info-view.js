@@ -10,10 +10,7 @@ function createTripInfoView(tripInfo) {
 
               <p class="trip-info__dates">${dates}</p>
             </div>
-
-            <p class="trip-info__cost">
-              Total: &euro;&nbsp;<span class="trip-info__cost-value">${price}</span>
-            </p>
+            ${price ? '<p class="trip-info__cost">Total: &euro;&nbsp;<span class="trip-info__cost-value">' + price + '</span></p>' : ''}
           </section>`;
 }
 

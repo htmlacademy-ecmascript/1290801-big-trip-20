@@ -11,6 +11,7 @@ import {sortPointsDay, sortPointsEvent, sortPointsOffers, sortPointsPrice, sortP
 import {filter} from '../utils/filter';
 import NewPointPresenter from './new-point-presenter';
 import TripInfoView from '../view/trip-info-view';
+import ErrorView from '../view/error-view';
 
 const TimeLimit = {
   LOWER_LIMIT: 350,
@@ -27,6 +28,7 @@ export default class ListPresenter {
   #sortComponent = null;
   #noPointsComponent = null;
   #loadingComponent = new LoadingView();
+  #errorComponent = new ErrorView()
   #tripInfoComponent = null;
   #newPointButton = null;
 
@@ -132,10 +134,15 @@ export default class ListPresenter {
         break;
       case UpdateType.INIT:
         // запускается при инициализации модели
+        console.log('Error ', this.#pointsModel.isError);
         this.#isLoading = false;
+        remove(this.#loadingComponent);
+        if (this.#pointsModel.isError) {
+          this.#renderError()
+          break;
+        }
         this.#newPointButton = new NewPointButtonView({onClick: this.#newPointButtonClickHandler});
         render(this.#newPointButton, this.#newPointButtonContainer, 'beforeend');
-        remove(this.#loadingComponent);
         this.#updateDestinationsAndOffersHandler();
         this.#renderList();
     }
@@ -209,6 +216,10 @@ export default class ListPresenter {
     render(this.#loadingComponent, this.#listContainer);
   }
 
+  #renderError() {
+    render(this.#errorComponent, this.#listContainer)
+  }
+
   #renderTripInfo() {
     this.#tripInfoComponent = new TripInfoView(this.#pointsModel.getTripInfoData(this.#pointsModel.points, this.#pointsModel.offers));
     render(this.#tripInfoComponent, this.#newPointButtonContainer, 'afterbegin');
@@ -245,6 +256,7 @@ export default class ListPresenter {
 
 
   #newPointButtonClickHandler = () => {
+    this.#handleModeChange()
     this.#currentSortType = SortType.DAY;
     this.#newPointButton.element.disabled = true;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
@@ -254,6 +266,9 @@ export default class ListPresenter {
 
   #newPointDestroyHandler = () => {
     this.#newPointButton.element.disabled = false;
+    if (this.points.length === 0 && !this.#newPointButton.element.disabled) {
+      this.#renderNoPoints();
+    }
   };
 
 

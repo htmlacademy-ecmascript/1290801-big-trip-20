@@ -80,6 +80,7 @@ export default class NewPointPresenter {
   };
 
   #handleDeleteClick = () => {
+
     this.destroy();
   };
 
