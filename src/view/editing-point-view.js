@@ -103,7 +103,6 @@ function createEditingPointView(point, allDestinations) {
             </label>
         </div>`;
     })
-    console.log(pointsCheckBoxes)
     return pointsCheckBoxes;
   }
 
@@ -329,7 +328,7 @@ export default class EditingPointView extends AbstractStatefulView {
     }
   }
 
-  #typeInputChange = (event) => {
+  #pointTypeChangeHandler = (event) => {
     event.preventDefault();
     //обработчик выбора типа точки
     this.updateElement({
@@ -339,7 +338,7 @@ export default class EditingPointView extends AbstractStatefulView {
     });
   };
 
-  #destinationInputChange = (event) => {
+  #destinationChangeHadnler = (event) => {
     event.preventDefault();
     //обработчик выбора направления (города)
     const selectedDestination = this.#allDestinations.find((destination) => destination.name === event.target.value);
@@ -361,7 +360,7 @@ export default class EditingPointView extends AbstractStatefulView {
     });
   };
 
-  #priceInputChange = (event) => {
+  #priceInputHandler = (event) => {
     event.preventDefault();
     //обработчик изменения цены (перерисовывать компонент не нужно)
     const newPrice = parseInt(event.target.value.replace(/[^0-9]/g, '') || '0', 10);
@@ -403,13 +402,13 @@ export default class EditingPointView extends AbstractStatefulView {
     this.element.querySelector('.event__rollup-btn')
       ?.addEventListener('click', this.#rollupClickHandler);
     //выбор типа путешествия
-    this.element.querySelector('.event__type-group').addEventListener('change', this.#typeInputChange);
+    this.element.querySelector('.event__type-group').addEventListener('change', this.#pointTypeChangeHandler);
     //выбор направления путешествия
-    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationInputChange);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHadnler);
     //кнопки offers
     this.element.querySelector('.event__available-offers')?.addEventListener('click', this.#offerClickHandler);
     //поле ввода цены
-    this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputChange);
+    this.element.querySelector('.event__input.event__input--price').addEventListener('input', this.#priceInputHandler);
     //добавление календарей
     this.#setDatePicker();
 

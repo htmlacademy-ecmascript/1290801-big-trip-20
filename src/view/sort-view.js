@@ -2,7 +2,6 @@ import AbstractView from '../framework/view/abstract-view.js';
 import {SortType} from '../const';
 
 const sortTypes = Object.values(SortType);
-console.log(sortTypes)
 
 
 function createSortItemTemplate(type, currentSortType, isDisabled) {
@@ -42,7 +41,7 @@ export default class SortView extends AbstractView{
     this.#handleSortTypeChange = onSortTypeChange;
     this.#isDisabled = isDisabled;
 
-    this.element.addEventListener('click', this.#sortTypeChangeHandler);
+    this.element.addEventListener('click', this.#sortTypeClickHandler);
   }
 
   get template() {
@@ -50,7 +49,7 @@ export default class SortView extends AbstractView{
   }
 
 
-  #sortTypeChangeHandler = (event) => {
+  #sortTypeClickHandler = (event) => {
     if (event.target.tagName !== 'LABEL') {
       return;
     }

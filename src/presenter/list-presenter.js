@@ -134,7 +134,6 @@ export default class ListPresenter {
         break;
       case UpdateType.INIT:
         // запускается при инициализации модели
-        console.log('Error ', this.#pointsModel.isError);
         this.#isLoading = false;
         remove(this.#loadingComponent);
         if (this.#pointsModel.isError) {
